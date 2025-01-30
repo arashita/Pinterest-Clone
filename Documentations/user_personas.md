@@ -4,7 +4,6 @@
 
 - Name: Jyo Cho
 - Occupation: Home Decor & Lifestyle Influencer
-- Pinterest Following: 15M+ followers
 - Location: Los Angeles, USA
 - Background:Jyo Cho is a well-known home decor and lifestyle influencer who shares high-quality, aesthetically pleasing images of home interiors, travel inspirations, and lifestyle tips. She collaborates with brands and engages with a large audience through Pinterest.
 
@@ -12,7 +11,6 @@
 
 - Inspire followers by sharing visually engaging content.
 - Increase audience engagement through likes and comments.
-- Collaborate with brands for sponsorships and promotions.
 - Organize content efficiently with multiple boards and categories.
 - Create a professional, visually cohesive profile that aligns with her brand.
 
@@ -81,7 +79,7 @@ Pain Points & Challenges:
 - Looks for organized and structured content for quick access.
 - Uses the platform for both inspiration and knowledge-sharing.
 
-Features Arashita Needs in the Pinterest:
+### Features Arashita Needs in the Pinterest:
 
 - User Authentication – Secure login/logout.
 - Board Creation & Management – Organize creative inspirations efficiently.
