@@ -27,12 +27,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-5%f1%8@t=43vr)hjp*t3uur^xf*x6rrhs&8!ds6vjn9=z@w1b-')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = False
-ALLOWED_HOSTS = ['pinterest.onrender.com']
+ALLOWED_HOSTS = ['major-project-pinterest.onrender.com', 'localhost']
+
 
 
 
