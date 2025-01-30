@@ -11,12 +11,12 @@ dj-database-url==2.3.0
 Django==4.2.18
 filelock==3.16.1
 fonttools==4.55.1
-future @ file:///AppleInternal/Library/BuildRoots/2c89a47b-9dd5-11ef-938f-6e654a286000/Library/Caches/com.apple.xbs/Sources/python3/future-0.18.2-py3-none-any.whl
+future==0.18.2  # Use the version from PyPI, not a local file path
 gunicorn==23.0.0
 importlib_resources==6.4.5
 isort==5.13.2
 kiwisolver==1.4.7
-macholib @ file:///AppleInternal/Library/BuildRoots/2c89a47b-9dd5-11ef-938f-6e654a286000/Library/Caches/com.apple.xbs/Sources/python3/macholib-1.15.2-py2.py3-none-any.whl
+macholib==1.15.2  # Use the version from PyPI
 matplotlib==3.9.3
 mccabe==0.7.0
 mypy-extensions==1.0.0
@@ -34,7 +34,7 @@ pyparsing==3.2.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2024.2
-six @ file:///AppleInternal/Library/BuildRoots/2c89a47b-9dd5-11ef-938f-6e654a286000/Library/Caches/com.apple.xbs/Sources/python3/six-1.15.0-py2.py3-none-any.whl
+six==1.15.0  # Use the version from PyPI
 sqlparse==0.5.3
 tomli==2.2.1
 tomlkit==0.13.2
