@@ -1,4 +1,5 @@
 altgraph @ file:///AppleInternal/Library/BuildRoots/2c89a47b-9dd5-11ef-938f-6e654a286000/Library/Caches/com.apple.xbs/Sources/python3/altgraph-0.17.2-py2.py3-none-any.whl
+altgraph==0.17.2
 asgiref==3.8.1
 astroid==3.3.5
 black==24.10.0
