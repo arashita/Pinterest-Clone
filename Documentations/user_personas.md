@@ -1,6 +1,6 @@
 # **USER PERSONAS**
 
-## User Persona: Jyo Cho (Influencer on Pinterest)
+## User Persona: Jyo Cho (Influencer)
 
 - Name: Jyo Cho
 - Occupation: Home Decor & Lifestyle Influencer
