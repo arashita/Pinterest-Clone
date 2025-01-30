@@ -58,7 +58,7 @@
 - Use boards to categorize ideas for better organization.
 - Discuss technical and design concepts through threaded comments.
 
-Pain Points & Challenges:
+### Pain Points & Challenges:
 
 - Finding niche content that aligns with specific technical and design interests.
 - Managing different creative inspirations across multiple boards.
