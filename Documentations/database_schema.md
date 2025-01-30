@@ -46,7 +46,16 @@ Fields:
 3. image_id (Foreign Key: Links to Image table)
 4. created_at
 
-## 5. Comment
+## 5. Follow
+
+Fields:
+
+1. id (Primary Key)
+2. follower (Foreign Key: Links to User table) – The user who is following.
+3. followed (Foreign Key: Links to User table) – The user being followed.
+4. created_at (Timestamp) – The time when the follow action occurred.
+
+## 6. Comment
 
 Fields:
 
@@ -58,7 +67,7 @@ Fields:
 6. created_at
 7. updated_at
 
-## 6. Threaded Comment (Reply to Comment)
+## 7. Threaded Comment (Reply to Comment)
 
 Fields:
 
@@ -77,3 +86,5 @@ Fields:
 4. User ↔ Like ↔ Image: A user can like many images, and an image can have many likes.
 5. User ↔ Comment ↔ Image: A user can comment on many images, and an image can have many comments.
 6. Comment ↔ Comment (Threaded): A comment can have multiple replies (threaded comments).
+7. User ↔ Follow: A user can follow many other users.
+8. Follow ↔ User: A follow entry refers to a follower and the user they are following.
