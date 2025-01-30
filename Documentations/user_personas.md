@@ -4,24 +4,24 @@
 
 - Name: Jyo Cho
 - Occupation: Home Decor & Lifestyle Influencer
-- Pinterest Following: 1M+ followers
+- Pinterest Following: 15M+ followers
 - Location: Los Angeles, USA
 - Background:Jyo Cho is a well-known home decor and lifestyle influencer who shares high-quality, aesthetically pleasing images of home interiors, travel inspirations, and lifestyle tips. She collaborates with brands and engages with a large audience through Pinterest.
 
 ### Goals & Motivations:
 
-- ✅ Inspire followers by sharing visually engaging content.
-- ✅ Increase audience engagement through likes and comments.
-- ✅ Collaborate with brands for sponsorships and promotions.
-- ✅ Organize content efficiently with multiple boards and categories.
-- ✅ Create a professional, visually cohesive profile that aligns with her brand.
+- Inspire followers by sharing visually engaging content.
+- Increase audience engagement through likes and comments.
+- Collaborate with brands for sponsorships and promotions.
+- Organize content efficiently with multiple boards and categories.
+- Create a professional, visually cohesive profile that aligns with her brand.
 
 ### Pain Points & Challenges:
 
-- ❌ Managing a high volume of likes and comments.
-- ❌ Keeping posts and boards well-organized for easy navigation.
-- ❌ Dealing with spam or negative comments.
-- ❌ Ensuring consistent engagement while balancing brand collaborations.
+- Managing a high volume of likes and comments.
+- Keeping posts and boards well-organized for easy navigation.
+- Dealing with spam or negative comments.
+- Ensuring consistent engagement while balancing brand collaborations.
 
 ### Platform Usage Behavior:
 
@@ -54,18 +54,18 @@
 
 ### Goals & Motivations:
 
-- ✅ Store and organize inspirations for personal and technical projects.
-- ✅ Upload and share creative work such as UI designs, project screenshots, and artwork.
-- ✅ Engage with like-minded creators by liking and commenting on posts.
-- ✅ Use boards to categorize ideas for better organization.
-- ✅ Discuss technical and design concepts through threaded comments.
+- Store and organize inspirations for personal and technical projects.
+- Upload and share creative work such as UI designs, project screenshots, and artwork.
+- Engage with like-minded creators by liking and commenting on posts.
+- Use boards to categorize ideas for better organization.
+- Discuss technical and design concepts through threaded comments.
 
 Pain Points & Challenges:
 
-- ❌ Finding niche content that aligns with specific technical and design interests.
-- ❌ Managing different creative inspirations across multiple boards.
-- ❌ Keeping track of discussions in threaded comments.
-- ❌ Avoiding clutter and maintaining a clean, organized profile.
+- Finding niche content that aligns with specific technical and design interests.
+- Managing different creative inspirations across multiple boards.
+- Keeping track of discussions in threaded comments.
+- Avoiding clutter and maintaining a clean, organized profile.
 
 ### Platform Usage Behavior:
 
