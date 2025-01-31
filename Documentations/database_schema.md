@@ -1,90 +1,70 @@
-# **DATABASE SCHEMA**
+# **Database Schema**
 
 ## 1. User
 
-Fields:
+| Field Name      | Type         | Constraints      |
+| --------------- | ------------ | ---------------- |
+| id              | UUID (PK)    | Primary Key      |
+| username        | String       | Unique, Required |
+| email           | String       | Unique, Required |
+| password_hash   | String       | Required         |
+| profile_picture | String (URL) | Optional         |
+| bio             | Text         | Optional         |
+| created_at      | Timestamp    | Default: NOW()   |
+| updated_at      | Timestamp    | Default: NOW()   |
 
-1. id (Primary Key)
-2. username (Unique)
-3. email (Unique)
-4. password_hash
-5. profile_picture (Optional)
-6. bio (Optional)
-7. created_at
-8. updated_at
+### Relationships:
+
+- A User can create multiple boards.
+- A User can upload multiple posts (images/videos).
+- A User can like and comment on multiple posts.
 
 ## 2. Board
 
-Fields:
+Field Name Type Constraints
+id UUID (PK) Primary Key
+name String Required
+description Text Optional
+user_id UUID (FK) Foreign Key → User
+created_at Timestamp Default: NOW()
+updated_at Timestamp Default: NOW()
 
-1. id (Primary Key)
-2. name
-3. description (Optional)
-4. user_id (Foreign Key: Links to User table)
-5. created_at
-6. updated_at
+### Relationships:
 
-## 3. Image
+- A Board can contain multiple posts (images/videos).
+- A User can have multiple boards.
 
-Fields:
+3. Post (Previously "Image" - Now Supports Videos Too!)
 
-1. id (Primary Key)
-2. title
-3. description (Optional)
-4. image_url (URL to the image file)
-5. board_id (Foreign Key: Links to Board table)
-6. user_id (Foreign Key: Links to User table)
-7. created_at
-8. updated_at
+Relationships:
+A Post can belong to one board.
+A User can create multiple posts.
+A Post can be liked and commented on.
 
-## 4. Like
+4. Like
 
-Fields:
+Relationships:
+A User can like multiple posts.
+A Post can have multiple likes.
 
-1. id (Primary Key)
-2. user_id (Foreign Key: Links to User table)
-3. image_id (Foreign Key: Links to Image table)
-4. created_at
+5. Comment
 
-## 5. Follow
+Relationships:
+A User can comment on multiple posts.
+A Post can have multiple comments.
+A Comment can have nested replies (threaded comments).
 
-Fields:
+6. Follow
 
-1. id (Primary Key)
-2. follower (Foreign Key: Links to User table) – The user who is following.
-3. followed (Foreign Key: Links to User table) – The user being followed.
-4. created_at (Timestamp) – The time when the follow action occurred.
+Relationships:
+A User can follow multiple users.
+A User can be followed by multiple users.
 
-## 6. Comment
-
-Fields:
-
-1. id (Primary Key)
-2. user_id (Foreign Key: Links to User table)
-3. image_id (Foreign Key: Links to Image table)
-4. parent_comment_id (Nullable, Foreign Key: Links to Comment table for threaded comments)
-5. content (Text)
-6. created_at
-7. updated_at
-
-## 7. Threaded Comment (Reply to Comment)
-
-Fields:
-
-1. id (Primary Key)
-2. parent_comment_id (Foreign Key: Links to Comment table)
-3. user_id (Foreign Key: Links to User table)
-4. content (Text)
-5. created_at
-6. updated_at
-
-## Relationships:
-
-1. User ↔ Board: A user can create many boards.
-2. User ↔ Image: A user can upload many images.
-3. Board ↔ Image: A board can contain many images.
-4. User ↔ Like ↔ Image: A user can like many images, and an image can have many likes.
-5. User ↔ Comment ↔ Image: A user can comment on many images, and an image can have many comments.
-6. Comment ↔ Comment (Threaded): A comment can have multiple replies (threaded comments).
-7. User ↔ Follow: A user can follow many other users.
-8. Follow ↔ User: A follow entry refers to a follower and the user they are following.
+Relationships (Updated)
+User ↔ Board → A user can create multiple boards.
+User ↔ Post → A user can upload multiple posts (images/videos).
+Board ↔ Post → A board can contain multiple posts.
+User ↔ Like ↔ Post → A user can like multiple posts, and a post can have multiple likes.
+User ↔ Comment ↔ Post → A user can comment on multiple posts, and a post can have multiple comments.
+Comment ↔ Comment (Threaded) → A comment can have multiple replies (threaded comments).
+User ↔ Follow ↔ User → Users can follow other users.

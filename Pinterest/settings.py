@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,8 +32,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-5%f1%8@t=43vr)hjp*t3uur^xf
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
-ALLOWED_HOSTS = ['major-project-pinterest.onrender.com', 'localhost']
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'major-project-pinterest.onrender.com']
+
 
 
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "core",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -94,6 +96,12 @@ DATABASES = {
         'PORT': '5432',  # Default PostgreSQL port
     }
 }
+
+
+
+# Default local database settings (for local development)
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -130,10 +138,13 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = [
+    os.path.join(BASE_DIR, "core/static")
+]
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = 'users.CustomUser'
