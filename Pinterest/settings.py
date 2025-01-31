@@ -85,9 +85,15 @@ WSGI_APPLICATION = "Pinterest.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pinpostgres',  # Replace with your database name
+        'USER': 'pinpostgres_user',  # Replace with your username
+        'PASSWORD': 'IELOeX1xCcH1oUOYaPhGZDuDuANygsG4',  # Replace with your password
+        'HOST': 'dpg-cudjnpij1k6c73corpv0-a.oregon-postgres.render.com',  # Replace with your host
+        'PORT': '5432',  # Default PostgreSQL port
+    }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
