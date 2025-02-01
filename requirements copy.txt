@@ -11,12 +11,13 @@ dj-database-url==2.3.0
 Django==4.2.18
 filelock==3.16.1
 fonttools==4.55.1
-future==0.18.2
+future==0.18.2  # Use the version from PyPI, not a local file path
 gunicorn==23.0.0
 importlib_resources==6.4.5
 isort==5.13.2
 kiwisolver==1.4.7
-macholib==1.15.2
+macholib==1.15.2  # Use the version from PyPI
+matplotlib==3.9.3
 mccabe==0.7.0
 mypy-extensions==1.0.0
 numpy==2.0.2
@@ -25,7 +26,6 @@ pandas==2.2.3
 pathspec==0.12.1
 pillow==11.0.0
 platformdirs==4.3.6
-psycopg2==2.9.10
 psycopg2-binary==2.9.10
 pygame==2.6.1
 pyling==0.2
@@ -34,7 +34,7 @@ pyparsing==3.2.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2024.2
-six==1.16.0
+six==1.15.0  # Use the version from PyPI
 sqlparse==0.5.3
 tomli==2.2.1
 tomlkit==0.13.2

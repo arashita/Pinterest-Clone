@@ -111,3 +111,16 @@ footer p {
   font-size: 14px;
   color: #666;
 }
+/* Logout Button */
+.btn-logout {
+  background-color: #e60023;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.btn-logout:hover {
+  background-color: #cc001f;
+}

@@ -5,6 +5,8 @@ from .models import CustomUser
 class UserRegisterForm(UserCreationForm):
     """Form for user registration."""
     email = forms.EmailField(required=True)
+    profile_picture = forms.ImageField(required=False)  # Optional profile picture
+    bio = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
         model = CustomUser
