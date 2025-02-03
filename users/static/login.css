@@ -1,4 +1,3 @@
-/* General Reset */
 body,
 html {
   margin: 0;
@@ -11,7 +10,7 @@ html {
   height: 100vh;
 }
 
-/* Background */
+
 .background {
   position: absolute;
   top: 0;
@@ -24,60 +23,58 @@ html {
   z-index: -1;
 }
 
-/* Container */
 .container {
   background-color: #ffffff;
   padding: 40px;
-  border-radius: 16px; /* More rounded edges */
+  border-radius: 16px; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 480px; /* Increased width for a larger form */
+  max-width: 480px; 
   text-align: center;
-  margin: 20px; /* Added margin for better spacing */
+  margin: 20px; 
 }
 
-/* Logo */
+
 .logo {
-  margin-bottom: 30px; /* Increased margin for better spacing */
+  margin-bottom: 30px; 
 }
 
 .logo svg {
-  width: 50px; /* Increased size */
-  height: 50px; /* Increased size */
+  width: 50px; 
+  height: 50px; 
 }
 
-/* Headings */
 h2 {
-  margin: 0 0 15px; /* Increased margin for better spacing */
-  font-size: 28px; /* Larger font size */
+  margin: 0 0 15px; 
+  font-size: 28px; 
   color: #333;
 }
 
 p {
-  margin: 0 0 25px; /* Increased margin for better spacing */
-  font-size: 16px; /* Larger font size */
+  margin: 0 0 25px; 
+  font-size: 16px; 
   color: #666;
 }
 
-/* Form Group */
+
 .form-group {
-  margin-bottom: 25px; /* Increased margin for better spacing */
+  margin-bottom: 25px; 
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  font-size: 16px; /* Larger font size */
+  font-size: 16px; 
   color: #333;
-  margin-bottom: 8px; /* Increased margin for better spacing */
+  margin-bottom: 8px; 
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px; /* Increased padding for larger inputs */
+  padding: 12px; 
   border: 1px solid #ccc;
-  border-radius: 8px; /* Slightly rounded edges for inputs */
-  font-size: 16px; /* Larger font size */
+  border-radius: 8px; 
+  font-size: 16px; 
   box-sizing: border-box;
 }
 
@@ -86,28 +83,26 @@ p {
   outline: none;
 }
 
-/* Login Button */
 .login-button {
   width: 100%;
-  padding: 15px; /* Increased padding for a larger button */
+  padding: 15px; 
   background-color: #e60023;
   color: white;
   border: none;
-  border-radius: 8px; /* Slightly rounded edges for button */
-  font-size: 18px; /* Larger font size */
+  border-radius: 8px; 
+  font-size: 18px; 
   cursor: pointer;
-  margin-top: 15px; /* Increased margin for better spacing */
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  margin-top: 15px; 
+  transition: background-color 0.3s ease;
 }
 
 .login-button:hover {
   background-color: #ad081b;
 }
 
-/* Signup Link */
 .signup-link {
-  margin-top: 25px; /* Increased margin for better spacing */
-  font-size: 16px; /* Larger font size */
+  margin-top: 25px; 
+  font-size: 16px; 
   color: #666;
 }
 

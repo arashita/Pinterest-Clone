@@ -21,32 +21,31 @@
       </div>
       <nav>
         {% if user.is_authenticated %}
-        <!-- Show logout button if user is logged in -->
-        <a href="{% url 'logout' %}" class="btn-logout">Log out</a>
+        <a href="{% url 'users:logout' %}" class="btn-logout">Log out</a>
         {% else %}
-        <!-- Show login and signup buttons if user is not logged in -->
-        <a href="{% url 'login' %}" class="btn-login">Log in</a>
-        <a href="{% url 'register' %}" class="btn-signup">Sign up</a>
+
+        <a href="{% url 'users:login' %}" class="btn-login">Log in</a>
+        <a href="{% url 'users:register' %}" class="btn-signup">Sign up</a>
         {% endif %}
       </nav>
     </header>
 
-    <!-- Hero Section -->
+
     <section class="hero">
       <div class="hero-content">
         <h1>Welcome to Pinterest</h1>
         <p>Discover new ideas to try</p>
         <a
-          href="{% if user.is_authenticated %}{% url 'index' %}{% else %}{% url 'login' %}?next={% url 'index' %}{% endif %}"
+          href="{% if user.is_authenticated %}{% url 'index' %}{% else %}{% url 'users:login' %}?next={% url 'index' %}{% endif %}"
           class="btn-explore"
           >Explore</a
         >
-        {% if not user.is_authenticated %}{% else %} Explore
+        {% if not user.is_authenticated %}{% else %}
         {% endif %}
       </div>
     </section>
 
-    <!-- Footer -->
+
     <footer>
       <p>&copy; 2023 Pinterest. All rights reserved.</p>
     </footer>

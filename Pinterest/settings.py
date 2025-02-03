@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-5%f1%8@t=43vr)hjp*t3uur^xf
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'major-project-pinterest.onrender.com']
 
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "core",
     "users",
+    "boards",
 ]
 
 MIDDLEWARE = [
@@ -143,6 +144,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "users", "static"),
     os.path.join(BASE_DIR, "core", "static"),
+    os.path.join(BASE_DIR, "boards", "static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 

@@ -10,7 +10,6 @@ body {
   color: #333;
 }
 
-/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -29,7 +28,7 @@ header {
 }
 
 .logo svg {
-  width: 43px; /* Adjust the size of the SVG */
+  width: 43px; 
   height: 43px;
   margin-right: 5px;
   margin-top: 10px;
@@ -57,7 +56,7 @@ nav a.btn-signup:hover {
   background-color: #cc001f;
 }
 
-/* Hero Section */
+
 .hero {
   background-image: url("https://source.unsplash.com/1600x900/?nature,travel"); /* Placeholder image */
   background-size: cover;
@@ -71,7 +70,7 @@ nav a.btn-signup:hover {
 }
 
 .hero-content {
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  background-color: rgba(0, 0, 0, 0.5); 
   padding: 40px;
   border-radius: 10px;
 }
@@ -99,7 +98,7 @@ nav a.btn-signup:hover {
   background-color: #cc001f;
 }
 
-/* Footer */
+
 footer {
   text-align: center;
   padding: 20px;
@@ -111,7 +110,7 @@ footer p {
   font-size: 14px;
   color: #666;
 }
-/* Logout Button */
+
 .btn-logout {
   background-color: #e60023;
   color: white;

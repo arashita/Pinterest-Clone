@@ -16,3 +16,10 @@ class UserLoginForm(AuthenticationForm):
     """Form for user login."""
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+class UserUpdateForm(forms.ModelForm):
+    """Form for updating user profile."""
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'bio', 'profile_picture']

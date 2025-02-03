@@ -1,4 +1,3 @@
-/* General Reset */
 body,
 html {
   margin: 0;
@@ -12,7 +11,6 @@ html {
   overflow-x: hidden;
 }
 
-/* Background */
 .background {
   position: fixed;
   top: 0;
@@ -25,7 +23,6 @@ html {
   z-index: -1;
 }
 
-/* Container */
 .container {
   background-color: #ffffff;
   padding: 40px;
@@ -40,7 +37,6 @@ html {
   z-index: 1;
 }
 
-/* Logo */
 .logo {
   margin-bottom: 30px;
 }
@@ -50,7 +46,6 @@ html {
   height: 50px;
 }
 
-/* Headings */
 h2 {
   margin: 0 0 15px;
   font-size: 24px;
@@ -64,9 +59,8 @@ p {
   color: #666;
 }
 
-/* Form Group */
 .form-group {
-  margin-bottom: 20px; /* Consistent margin between all form groups */
+  margin-bottom: 20px; 
   text-align: left;
 }
 
@@ -74,13 +68,13 @@ p {
   display: block;
   font-size: 14px;
   color: #333;
-  margin-bottom: 8px; /* Consistent margin below labels */
+  margin-bottom: 8px; 
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 12px; /* Consistent padding for inputs */
+  padding: 12px; 
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
@@ -99,7 +93,6 @@ p {
   min-height: 120px;
 }
 
-/* Register Button */
 .register-button {
   width: 100%;
   padding: 14px;
@@ -117,7 +110,6 @@ p {
   background-color: #ad081b;
 }
 
-/* Login Link */
 .login-link {
   margin-top: 25px;
   font-size: 14px;
@@ -135,7 +127,6 @@ p {
   text-decoration: underline;
 }
 
-/* Error Messages */
 .error-messages {
   background-color: #f8d7da;
   color: #721c24;
@@ -150,7 +141,6 @@ p {
   margin: 0;
 }
 
-/* Input Info (Constraints) */
 .input-info {
   font-size: 12px;
   color: #666;
@@ -166,7 +156,6 @@ p {
   font-size: 14px;
 }
 
-/* Required Asterisk */
 .required {
   color: red;
   font-weight: bold;
@@ -174,7 +163,6 @@ p {
   margin-left: 5px;
 }
 
-/* Optional Label */
 .optional {
   color: #666;
   font-size: 12px;
