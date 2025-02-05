@@ -121,3 +121,23 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #ad081b;
 }
+.create-post-btn-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.create-post-btn {
+    display: inline-block;
+    background-color: rgb(230, 0, 35);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.create-post-btn:hover {
+    background-color: #b30027; /* Darker red on hover */
+}

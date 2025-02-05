@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Board</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">🏠 Home</a>
+        <a href="{% url 'boards:board_list' %}">🖼️ My Boards</a>
+        <a href="{% url 'posts:create_post' %}">➕ Create Post</a>
+    </header>
+
+    <main>
+        <h2>Create a New Board</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Render the form -->
+            <button type="submit">Create Board</button>
+        </form>
+    </main>
+</body>
+</html>

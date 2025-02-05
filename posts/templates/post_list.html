@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Posts</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">🏠 Home</a>
+        <a href="{% url 'posts:create_post' %}">➕ Create Post</a>
+    </header>
+
+    <main>
+        <h2>All Posts</h2>
+        <div class="post-container">
+            {% for post in posts %}
+                <div class="post">
+                    <img src="{{ post.media.url }}" alt="{{ post.title }}" width="200">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.description }}</p>
+                    {% if post.user == user %}
+                        <form method="POST" action="{% url 'posts:delete_post' post.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Delete Post</button>
+                        </form>
+                    {% endif %}
+
+                    <!-- Like/Unlike Button -->
+                    {% if user.is_authenticated %}
+                        <form method="POST" action="{% url 'posts:like_post' post.id %}">
+                            {% csrf_token %}
+                            {% if user in post.likes.all %}
+                                <button type="submit">Unlike</button>  <!-- If already liked, show "Unlike" -->
+                            {% else %}
+                                <button type="submit">Like</button>  <!-- If not liked, show "Like" -->
+                            {% endif %}
+                        </form>
+                    {% endif %}
+
+                    <!-- Display the number of likes -->
+                    <p>{{ post.likes.count }} Likes</p>
+                </div>
+            {% empty %}
+                <p>No posts available.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

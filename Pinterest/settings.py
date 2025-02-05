@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "core",
     "users",
     "boards",
+    "posts",
 ]
 
 MIDDLEWARE = [

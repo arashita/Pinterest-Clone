@@ -8,23 +8,22 @@ from .forms import BoardForm
 def board_list(request):
     """Display all boards of the logged-in user."""
     boards = Board.objects.filter(user=request.user)
-    return render(request, 'boards/board_list.html', {'boards': boards})
+    return render(request, 'board_list.html', {'boards': boards})
 
 @login_required
 def board_create(request):
     """Allow users to create a new board."""
     if request.method == "POST":
-        data = json.loads(request.body)
-        form = BoardForm(data)
-        if form.is_valid():
+        form = BoardForm(request.POST)
+        if form.is_valid(): 
             board = form.save(commit=False)
             board.user = request.user
             board.save()
-            return JsonResponse({'message': 'Board created successfully!'})
-        
-        return JsonResponse({'error': form.errors}, status=400)
-    
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+            return redirect('boards:board_list')
+
+    else:
+        form = BoardForm()
+    return render(request, 'board_form.html', {'form': form})
 
 
 @login_required
@@ -38,7 +37,7 @@ def board_update(request, board_id):
             return redirect('board_list')
     else:
         form = BoardForm(instance=board)
-    return render(request, 'boards/board_form.html', {'form': form})
+    return render(request, 'board_form.html', {'form': form})
 
 @login_required
 def board_delete(request, board_id):
@@ -47,4 +46,4 @@ def board_delete(request, board_id):
     if request.method == "POST":
         board.delete()
         return redirect('board_list')
-    return render(request, 'boards/board_confirm_delete.html', {'board': board})
+    return render(request, 'board_confirm_delete.html', {'board': board})

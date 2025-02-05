@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Boards</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">🏠 Home</a>
+        <a href="{% url 'posts:create_post' %}">➕ Create Post</a>
+    </header>
+
+    <main>
+        <h2>My Boards</h2>
+        <p><a href="{% url 'boards:board_create' %}">Create a new board</a></p>
+
+        <div class="board-container">
+            {% for board in boards %}
+                <div class="board">
+                    <h3>{{ board.name }}</h3>
+                    <p>{{ board.description }}</p>
+                    <a href="{% url 'boards:board_update' board.id %}">Edit</a>
+                    <form method="POST" action="{% url 'boards:board_delete' board.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>You haven't created any boards yet.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

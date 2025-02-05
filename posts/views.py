@@ -1,0 +1,50 @@
+from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Post
+from .forms import PostForm
+
+@login_required
+def create_post(request):
+    """Allow users to create a new post."""
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('home')
+    else:
+        form = PostForm()
+    
+    return render(request, "create_post.html", {"form": form})
+
+def post_list(request):
+    """Display all posts."""
+    posts = Post.objects.all().order_by("-created_at")
+    return render(request, "post_list.html", {"posts": posts})
+
+def delete_post(request, post_id):
+    # Get the post object by its ID, or return a 404 if it doesn't exist
+    post = get_object_or_404(Post, id=post_id)
+
+    # Ensure the user is the owner of the post (optional for security)
+    if post.user == request.user:
+        post.delete()  # Delete the post
+        return redirect('posts:post_list')  # Redirect to the list of posts
+    else:
+        return redirect('home')  # Redirect if the user doesn't have permission
+
+def like_post(request, post_id):
+    # Get the post object by its ID, or return a 404 if it doesn't exist
+    post = get_object_or_404(Post, id=post_id)
+    
+    # Check if the user has already liked the post
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)  # Remove like
+    else:
+        post.likes.add(request.user)  # Add like
+    
+    return redirect('posts:post_list')  # Redirect to post list (or wherever you want)
