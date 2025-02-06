@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Deletion</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">🏠 Home</a>
+        <a href="{% url 'boards:board_list' %}">📌 All Boards</a>
+    </header>
+
+    <main>
+        <h2>Are you sure you want to delete the board "{{ board.name }}"?</h2>
+        <p>Once deleted, this action cannot be undone.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit">Yes, Delete</button>
+            <a href="{% url 'boards:board_list' %}"><button type="button">Cancel</button></a>
+        </form>
+    </main>
+</body>
+</html>

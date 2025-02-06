@@ -12,132 +12,112 @@ header {
     padding: 10px 20px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.logo svg{
-    height:30px;
-    width:30px;
-}
-.profile svg {
-    height: 24px;
-    width: 24px;
-}
-
-.search-bar input {
-    width: 300px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    outline: none;
-}
-
-.create-board {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.create-board button {
-    padding: 10px 20px;
-    background-color: #e60023;
-    color: #fff;
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.create-board button:hover {
-    background-color: #ad081b;
-}
-
-main {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.modal {
-    display: none; 
-    position: fixed;
-    z-index: 1;
-    left: 0;
+    position: sticky;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 1000;
 }
 
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #000;
-}
-
-
-form {
+/* Left Section: Logo, Home, Boards, Add Post */
+.left-section {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
-label {
-    margin-bottom: 8px;
-    font-weight: bold;
+.logo svg {
+    height: 40px;
+    width: 40px;
+    margin-top: 12px;
 }
 
-input, textarea {
-    margin-bottom: 16px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #e60023;
-    color: #fff;
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button[type="submit"]:hover {
-    background-color: #ad081b;
-}
-.create-post-btn-container {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.create-post-btn {
-    display: inline-block;
-    background-color: rgb(230, 0, 35);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+.nav-link {
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    font-size: 16px;
+    color: #333;
     font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 24px;
     transition: background-color 0.3s;
 }
 
-.create-post-btn:hover {
-    background-color: #b30027; /* Darker red on hover */
+.nav-link svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+}
+
+.nav-link.active {
+    background-color: #e60023;
+    color: white;
+}
+
+.nav-link:hover {
+    background-color: #f0f0f0;
+}
+
+/* Search Bar */
+.search-bar input {
+    width: 300px;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 24px;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Profile Icon */
+.profile svg {
+    width: 24px;
+    height: 24px;
+    color: #333;
+}
+
+/* Main Content */
+main {
+    padding: 20px;
+}
+
+.pins-container {
+    column-count: 5;
+    column-gap: 15px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.pin {
+    display: inline-block;
+    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
+    break-inside: avoid;
+}
+
+.pin img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .pins-container {
+        column-count: 4;
+    }
+}
+
+@media (max-width: 900px) {
+    .pins-container {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 600px) {
+    .pins-container {
+        column-count: 2;
+    }
+
+    .search-bar input {
+        width: 200px;
+    }
 }

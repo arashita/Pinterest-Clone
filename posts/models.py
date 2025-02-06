@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from boards.models import Board
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts")
@@ -8,7 +9,7 @@ class Post(models.Model):
     media = models.FileField(upload_to="posts/")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name="posts")  # Add ForeignKey to Board
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="liked_posts", blank=True)
 
     def __str__(self):

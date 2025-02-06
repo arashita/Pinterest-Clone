@@ -8,18 +8,24 @@ from .forms import PostForm
 
 @login_required
 def create_post(request):
-    """Allow users to create a new post."""
+    """Allow users to create a post only in their own boards."""
     if request.method == "POST":
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             post = form.save(commit=False)
-            post.user = request.user
+
+            # Ensure the board belongs to the logged-in user
+            if post.board.user != request.user:
+                return redirect('boards:board_list')  # Redirect if board is not theirs
+
+            post.user = request.user  # Assign post to the logged-in user
             post.save()
-            return redirect('home')
+            return redirect('posts:post_list')
     else:
-        form = PostForm()
-    
-    return render(request, "create_post.html", {"form": form})
+        form = PostForm(user=request.user)  # Pass the logged-in user
+
+    return render(request, 'create_post.html', {'form': form})
+
 
 def post_list(request):
     """Display all posts."""
@@ -48,3 +54,9 @@ def like_post(request, post_id):
         post.likes.add(request.user)  # Add like
     
     return redirect('posts:post_list')  # Redirect to post list (or wherever you want)
+
+
+@login_required
+def home(request):
+    """Dashboard for authenticated users."""
+    return render(request, "home.html")

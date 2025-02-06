@@ -28,7 +28,7 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            next_url = request.GET.get('next', 'users:home')
+            next_url = request.GET.get('next', 'home')
             return redirect(next_url)  
         else:
             messages.error(request, 'Invalid username or password.')

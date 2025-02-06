@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 import json
 from django.contrib.auth.decorators import login_required
 from .models import Board
+from posts.models import Post
 from .forms import BoardForm
 
 @login_required
@@ -45,5 +46,17 @@ def board_delete(request, board_id):
     board = get_object_or_404(Board, id=board_id, user=request.user)
     if request.method == "POST":
         board.delete()
-        return redirect('board_list')
+        return redirect('boards:board_list')  # Redirect to the board list page
     return render(request, 'board_confirm_delete.html', {'board': board})
+
+@login_required
+def board_detail(request, board_id):
+    """Ensure only board owners can manage their board."""
+    board = get_object_or_404(Board, id=board_id)
+
+    # Restrict board access
+    if board.user != request.user:
+        return redirect('boards:board_list')  # Redirect if the board isn't theirs
+
+    posts = Post.objects.filter(board=board)
+    return render(request, "board_detail.html", {"board": board, "posts": posts})

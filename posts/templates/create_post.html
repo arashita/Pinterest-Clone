@@ -17,7 +17,22 @@
         <h2>Create a New Post</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
+            <div>
+                <label for="{{ form.title.id_for_label }}">Title</label>
+                {{ form.title }}  <!-- Title field -->
+            </div>
+            <div>
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}  <!-- Description field -->
+            </div>
+            <div>
+                <label for="{{ form.media.id_for_label }}">Media</label>
+                {{ form.media }}  <!-- Media field -->
+            </div>
+            <div>
+                <label for="{{ form.board.id_for_label }}">Board</label>
+                {{ form.board }}  <!-- Board selection dropdown -->
+            </div>
             <button type="submit">Post</button>
         </form>
     </main>
