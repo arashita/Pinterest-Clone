@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Boards</title>
     <link rel="stylesheet" href="{% static 'board_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
@@ -22,21 +23,29 @@
     </header>
 
     <main>
-        <h2>My Boards</h2>
-        <p><a href="{% url 'boards:board_create' %}" class="create-board-btn">Create a new board</a></p>
+        <h2 style="text-align: center;">My Boards</h2>
+        <div style="text-align: center;">
+            <p><a href="{% url 'boards:board_create' %}" class="create-board-btn">Create a new board</a></p>
+        </div>
 
         <div class="boards-container">
             {% for board in boards %}
                 <div class="board-card">
-                    <h3>{{ board.name }}</h3>
-                    <p>{{ board.description }}</p>
-                    <div class="board-actions">
-                        <a href="{% url 'boards:board_detail' board.id %}" class="btn">View Pins</a>
-                        <a href="{% url 'boards:board_update' board.id %}" class="btn">Edit</a>
-                        <form method="POST" action="{% url 'boards:board_delete' board.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn delete-btn">Delete</button>
-                        </form>
+                    <div class="board-image">
+                        <!-- Placeholder for board image -->
+                        <img src="https://via.placeholder.com/300x200" alt="Board Image">
+                    </div>
+                    <div class="board-content">
+                        <h3>{{ board.name }}</h3>
+                        <p>{{ board.description }}</p>
+                        <div class="board-actions">
+                            <a href="{% url 'boards:board_detail' board.id %}" class="btn view-btn"><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'boards:board_update' board.id %}" class="btn edit-btn"><i class="fas fa-edit"></i></a>
+                            <form method="POST" action="{% url 'boards:board_delete' board.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             {% empty %}

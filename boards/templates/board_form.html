@@ -5,21 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Board</title>
-    <link rel="stylesheet" href="{% static 'home.css' %}">
+    <link rel="stylesheet" href="{% static 'board_form.css' %}">
 </head>
 <body>
     <header>
-        <a href="{% url 'home' %}">🏠 Home</a>
-        <a href="{% url 'boards:board_list' %}">🖼️ My Boards</a>
-        <a href="{% url 'posts:create_post' %}">➕ Create Post</a>
+        <div class="left-section">
+            <!-- Pinterest Logo -->
+            <a href="{% url 'home' %}" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 5.69373 17.3488 C 5.58145 16.327 5.66114 15.3484 5.8857 14.4022 L 6.7912 10.5237 C 6.6427 10.0524 6.53042 9.51268 6.53042 8.97302 C 6.53042 7.71376 7.14253 6.81431 8.10236 6.81431 C 8.76878 6.81431 9.25776 7.27483 9.25776 8.16349 C 9.25776 8.44414 9.1998 8.76074 9.08752 9.12053 L 8.69274 10.4121 C 8.61305 10.6604 8.58046 10.8943 8.58046 11.0993 C 8.58046 11.9988 9.27225 12.5061 10.1524 12.5061 C 11.7243 12.5061 12.8471 10.8871 12.8471 8.78593 C 12.8471 6.44733 11.3078 4.95063 9.0332 4.95063 C 6.49781 4.95063 4.88966 6.59124 4.88966 8.87587 C 4.88966 9.79693 5.17218 10.6532 5.72635 11.236 C 5.54524 11.5383 5.35327 11.5958 5.0599 11.5958 C 4.15441 11.5958 3.29237 10.3258 3.29237 8.59525 C 3.29237 5.60545 5.7046 3.22007 9.08752 3.22007 C 12.6407 3.22007 14.8718 5.681 14.8718 8.71758 C 14.8718 11.7757 12.6986 14.0712 10.3552 14.0712 C 9.42799 14.0712 8.61305 13.679 8.0444 12.9702 L 7.58079 14.8375 C 7.33088 15.8053 6.9578 16.7156 6.35656 17.5934 C 7.20411 17.8525 8.0444 18 9.05131 18 C 14.0532 18 18.1062 13.974 18.1062 9.0054 C 18.1062 4.03677 14.0569 0 9.05493 0 C 4.05299 0 0 4.02599 0 8.9946 C 0 12.7616 2.33256 16.0104 5.69373 17.3488 Z" fill="rgb(230, 0, 35)" />
+                </svg>
+            </a>
+            <!-- Create Post Button -->
+            <a href="{% url 'posts:create_post' %}" class="nav-link create-btn">Create Post</a>
+        </div>
     </header>
 
     <main>
-        <h2>Create a New Board</h2>
-        <form method="POST">
+        <h2 style="text-align: center;">Create a New Board</h2>
+        <form method="POST" class="board-form">
             {% csrf_token %}
             {{ form.as_p }}  <!-- Render the form -->
-            <button type="submit">Create Board</button>
+            <button type="submit" class="btn create-board-btn">Create Board</button>
         </form>
     </main>
 </body>

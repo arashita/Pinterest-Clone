@@ -1,4 +1,5 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,6 +25,15 @@
                 <h1 id="profile-name">{{ user.username }}</h1>
                 <p id="profile-email">{{ user.email }}</p>
                 <p id="profile-bio">{% if user.bio %}{{ user.bio }}{% else %}No bio available.{% endif %}</p>
+                {% if user != request.user %}
+                    <button id="followBtn" class="follow-btn" data-user-id="{{ user.id }}">
+                        {% if is_following %}
+                            <a href="{% url 'users:unfollow' user.id %}">Unfollow</a>
+                        {% else %}
+                            <a href="{% url 'users:follow' user.id %}">Follow</a>
+                        {% endif %}
+                    </button>
+                {% endif %}
                 <button class="edit-btn" id="edit-profile-btn"><i class="fas fa-edit"></i></button>
             </div>
         </div>
@@ -61,6 +71,38 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const followBtn = document.getElementById("followBtn");
+
+            if (followBtn) {
+                followBtn.addEventListener("click", async function () {
+                    const userId = followBtn.getAttribute("data-user-id");
+                    const isFollowing = followBtn.innerText === "Unfollow";
+                    const url = isFollowing ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId) 
+                                            : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
+
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                            },
+                        });
+
+                        const data = await response.json();
+                        if (data.message === "Followed successfully!") {
+                            followBtn.innerText = "Unfollow";
+                        } else if (data.message === "Unfollowed successfully!") {
+                            followBtn.innerText = "Follow";
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                });
+            }
+        });
+    </script>
     <script>
         const editProfileBtn = document.getElementById("edit-profile-btn");
         const editForm = document.getElementById("edit-profile-form");

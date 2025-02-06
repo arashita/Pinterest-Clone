@@ -1,0 +1,109 @@
+/* Header Styling */
+body{
+    font-family: Arial, sans-serif;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo and button */
+}
+
+/* Pinterest Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo svg {
+    height: 40px; /* Adjust size as needed */
+    width: 40px;
+    /* Adjust size as needed */
+  margin-top: 9px;
+}
+
+/* Create Post Button Styling */
+.create-btn {
+    text-decoration: none;
+    color: black; /* Black text */
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 24px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: transparent; /* No background */
+    border: 1px solid #ccc; /* Optional: Add a border */
+}
+
+.create-btn:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+/* Form Styling */
+.board-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.board-form p {
+    margin-bottom: 15px;
+    margin-right: 20px;
+}
+
+.board-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.board-form input,
+.board-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.board-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    background-color: #e60023;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #cc001f;
+}
+
+.create-board-btn {
+    width: 100%;
+    margin-top: 10px;
+}

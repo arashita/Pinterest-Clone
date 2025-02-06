@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -28,11 +29,13 @@ header {
     display: flex;
     align-items: center;
 }
-.logo svg{
-  height:30px;
-  width: 30px;
-  margin-top: 5px;
+
+.logo svg {
+    height: 30px;
+    width: 30px;
+    margin-top: 5px;
 }
+
 .logo {
     height: 40px; /* Adjust size as needed */
     width: auto; /* Maintain aspect ratio */
@@ -55,10 +58,13 @@ header {
     background-color: #f0f0f0;
 }
 
+/* Main Section */
 main {
     padding: 20px;
+    text-align: center;
 }
 
+/* Create Board Button */
 .create-board-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -69,69 +75,124 @@ main {
     margin-bottom: 20px;
 }
 
-.boards-container {
-    column-count: 3;
-    column-gap: 15px;
-    margin: 0 auto;
-    max-width: 1200px;
+.create-board-btn:hover {
+    background-color: #cc001e;
 }
 
+/* Boards Container - Displays Boards Horizontally */
+.boards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px; /* Space between boards */
+    justify-content: center; /* Center boards */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Board Card Styling */
 .board-card {
-    display: inline-block;
-    width: 100%;
     background-color: white;
     border-radius: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
-    break-inside: avoid;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.board-card:hover {
+    transform: scale(1.05);
+}
+
+.board-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.board-content {
     padding: 15px;
+    text-align: left;
 }
 
-.board-card h3 {
+.board-content h3 {
     margin: 0 0 10px;
+    font-size: 1.2em;
 }
 
-.board-card p {
+.board-content p {
     margin: 0 0 15px;
     color: #666;
+    font-size: 0.9em;
 }
 
+/* Align Buttons in a Single Line */
 .board-actions {
     display: flex;
+    justify-content: space-between; /* Space buttons evenly */
+    align-items: center; /* Align items vertically */
     gap: 10px;
+    margin-top: 10px;
 }
 
+/* Buttons Styling */
 .btn {
-    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
     text-decoration: none;
-    border-radius: 24px;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
-    background-color: #f0f0f0;
-}
-
-.delete-btn {
-    background-color: #ff4d4d;
-    color: white;
+    transition: background-color 0.3s ease;
     border: none;
     cursor: pointer;
+}
+
+/* View Pins Icon */
+.view-btn {
+    background-color: #e60023;
+    color: white;
+}
+
+.view-btn:hover {
+    background-color: #cc001e;
+}
+
+/* Edit Icon */
+.edit-btn {
+    background-color: #e60023;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #cc001e;
+}
+
+/* Delete Icon */
+.delete-btn {
+    background-color: #e60023;
+    color: white;
 }
 
 .delete-btn:hover {
     background-color: #cc0000;
 }
 
+/* Ensuring Icons are Visible */
+.btn i {
+    font-size: 18px;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .boards-container {
-        column-count: 2;
+        justify-content: center;
     }
 }
 
 @media (max-width: 600px) {
     .boards-container {
-        column-count: 1;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
 }
