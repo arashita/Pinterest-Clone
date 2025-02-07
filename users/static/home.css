@@ -1,17 +1,19 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    background-color: #f8f8f8;
 }
 
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 12px 20px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -21,30 +23,36 @@ header {
 .left-section {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
+}
+
+/* Logo Alignment */
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
 }
 
 .logo svg {
-    height: 40px;
-    width: 40px;
-    margin-top: 12px;
+    width: 41px;
+    height: 41px;
+    margin-top: 6px;
 }
 
+/* Navigation Links */
 .nav-link {
-    display: flex;
-    align-items: center;
     text-decoration: none;
     color: #333;
     font-weight: bold;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 24px;
-    transition: background-color 0.3s;
+    transition: background 0.3s ease-in-out;
 }
 
-.nav-link svg {
-    width: 24px;
-    height: 24px;
-    stroke: currentColor;
+.nav-link:hover {
+    background-color: #ddd;
 }
 
 .nav-link.active {
@@ -52,68 +60,89 @@ header {
     color: white;
 }
 
-.nav-link:hover {
-    background-color: #f0f0f0;
-}
-
 /* Search Bar */
 .search-bar input {
-    width: 300px;
-    padding: 8px 16px;
-    border: 1px solid #ccc;
+    width: 350px;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
     border-radius: 24px;
+    font-size: 16px;
     outline: none;
-    font-size: 14px;
 }
 
 /* Profile Icon */
+.profile a {
+    display: flex;
+    align-items: center;
+}
+
 .profile svg {
-    width: 24px;
-    height: 24px;
-    color: #333;
+    width: 30px;
+    height: 30px;
+    fill: #333;
 }
 
 /* Main Content */
 main {
     padding: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
-.pins-container {
+/* Pins Container - Masonry Layout */
+.posts-container {
     column-count: 5;
     column-gap: 15px;
     margin: 0 auto;
-    max-width: 1200px;
+    padding: 20px 0;
 }
 
-.pin {
+/* Individual Pin (Post) */
+.post-card {
     display: inline-block;
-    margin-bottom: 15px;
-    position: relative;
     width: 100%;
     break-inside: avoid;
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
 }
 
-.pin img {
+.post-card:hover {
+    transform: scale(1.02);
+}
+
+.post-card img {
     width: 100%;
-    border-radius: 16px;
     display: block;
+    border-radius: 16px;
+}
+
+/* Uploaded by text */
+.post-card p {
+    font-size: 14px;
+    color: #555;
+    padding: 8px;
+    text-align: center;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .pins-container {
+    .posts-container {
         column-count: 4;
     }
 }
 
 @media (max-width: 900px) {
-    .pins-container {
+    .posts-container {
         column-count: 3;
     }
 }
 
 @media (max-width: 600px) {
-    .pins-container {
+    .posts-container {
         column-count: 2;
     }
 

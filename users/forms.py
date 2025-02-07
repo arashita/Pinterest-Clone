@@ -23,3 +23,4 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'bio', 'profile_picture']
+    profile_picture = forms.ImageField(required=False)  # Allow optional upload

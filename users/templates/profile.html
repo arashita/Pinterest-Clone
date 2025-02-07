@@ -21,20 +21,30 @@
                 </label>
                 <input type="file" id="edit-profile-picture" name="profile_picture" accept="image/*" style="display: none;">
             </div>
+
             <div class="profile-info">
                 <h1 id="profile-name">{{ user.username }}</h1>
                 <p id="profile-email">{{ user.email }}</p>
                 <p id="profile-bio">{% if user.bio %}{{ user.bio }}{% else %}No bio available.{% endif %}</p>
+
+                <!-- Followers & Following Count -->
+                <p><strong>Followers:</strong> <span id="followers-count">{{ followers_count }}</span></p>
+                <p><strong>Following:</strong> <span id="following-count">{{ following_count }}</span></p>
+
                 {% if user != request.user %}
-                    <button id="followBtn" class="follow-btn" data-user-id="{{ user.id }}">
+                    <form id="follow-form" action="{% url 'users:follow_user' user.id %}" method="POST">
+                        {% csrf_token %}
                         {% if is_following %}
-                            <a href="{% url 'users:unfollow' user.id %}">Unfollow</a>
+                            <button type="submit" class="follow-btn">Unfollow</button>
                         {% else %}
-                            <a href="{% url 'users:follow' user.id %}">Follow</a>
+                            <button type="submit" class="follow-btn">Follow</button>
                         {% endif %}
-                    </button>
+                    </form>
                 {% endif %}
-                <button class="edit-btn" id="edit-profile-btn"><i class="fas fa-edit"></i></button>
+
+                {% if user == request.user %}
+                    <button class="edit-btn" id="edit-profile-btn"><i class="fas fa-edit"></i></button>
+                {% endif %}
             </div>
         </div>
 
@@ -73,90 +83,92 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const followBtn = document.getElementById("followBtn");
+            const followForm = document.getElementById("follow-form");
 
-            if (followBtn) {
-                followBtn.addEventListener("click", async function () {
-                    const userId = followBtn.getAttribute("data-user-id");
-                    const isFollowing = followBtn.innerText === "Unfollow";
-                    const url = isFollowing ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId) 
-                                            : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
+            if (followForm) {
+                followForm.addEventListener("submit", async function (event) {
+                    event.preventDefault();
+
+                    const formData = new FormData(followForm);
+                    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+                    const actionURL = followForm.action;
 
                     try {
-                        const response = await fetch(url, {
+                        const response = await fetch(actionURL, {
                             method: "POST",
-                            headers: {
-                                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
-                            },
+                            headers: { "X-CSRFToken": csrfToken },
+                            body: formData,
                         });
 
                         const data = await response.json();
-                        if (data.message === "Followed successfully!") {
-                            followBtn.innerText = "Unfollow";
-                        } else if (data.message === "Unfollowed successfully!") {
-                            followBtn.innerText = "Follow";
+                        const followersCountElem = document.getElementById("followers-count");
+
+                        if (data.message.includes("Followed")) {
+                            followForm.innerHTML = '<button type="submit" class="follow-btn">Unfollow</button>';
+                            followersCountElem.textContent = parseInt(followersCountElem.textContent) + 1;
+                        } else if (data.message.includes("Unfollowed")) {
+                            followForm.innerHTML = '<button type="submit" class="follow-btn">Follow</button>';
+                            followersCountElem.textContent = Math.max(0, parseInt(followersCountElem.textContent) - 1);
                         }
                     } catch (error) {
                         console.error("Error:", error);
                     }
                 });
             }
-        });
-    </script>
-    <script>
-        const editProfileBtn = document.getElementById("edit-profile-btn");
-        const editForm = document.getElementById("edit-profile-form");
-        const cancelEditBtn = document.getElementById("cancel-edit-btn");
 
-        editProfileBtn.addEventListener("click", () => {
-            editForm.style.display = "block";
-            editProfileBtn.style.display = "none";
-        });
+            const editProfileBtn = document.getElementById("edit-profile-btn");
+            const editForm = document.getElementById("edit-profile-form");
+            const cancelEditBtn = document.getElementById("cancel-edit-btn");
 
-        cancelEditBtn.addEventListener("click", () => {
-            editForm.style.display = "none";
-            editProfileBtn.style.display = "inline-block";
-        });
-
-        document.getElementById("edit-profile-picture").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("profile-pic-preview").src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById("edit-form").addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData(document.getElementById("edit-form"));
-            const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-
-            const response = await fetch("{% url 'users:profile' %}", { 
-                method: "POST",
-                headers: { "X-CSRFToken": csrfToken },
-                body: formData
+            editProfileBtn.addEventListener("click", () => {
+                editForm.style.display = "block";
+                editProfileBtn.style.display = "none";
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                document.getElementById("profile-name").textContent = data.username;
-                document.getElementById("profile-email").textContent = data.email;
-                document.getElementById("profile-bio").textContent = data.bio || "No bio available.";
-                
-                if (data.profile_picture) {
-                    document.getElementById("profile-pic-preview").src = data.profile_picture;
-                }
-
-                alert("Profile updated successfully!");
+            cancelEditBtn.addEventListener("click", () => {
                 editForm.style.display = "none";
                 editProfileBtn.style.display = "inline-block";
-            } else {
-                alert("Error updating profile. Please try again.");
-            }
+            });
+
+            document.getElementById("edit-profile-picture").addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("profile-pic-preview").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById("edit-form").addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const formData = new FormData(document.getElementById("edit-form"));
+                const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+                const response = await fetch("{% url 'users:profile' %}", { 
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById("profile-name").textContent = data.username;
+                    document.getElementById("profile-email").textContent = data.email;
+                    document.getElementById("profile-bio").textContent = data.bio || "No bio available.";
+                    
+                    if (data.profile_picture) {
+                        document.getElementById("profile-pic-preview").src = data.profile_picture;
+                    }
+
+                    alert("Profile updated successfully!");
+                    editForm.style.display = "none";
+                    editProfileBtn.style.display = "inline-block";
+                } else {
+                    alert("Error updating profile. Please try again.");
+                }
+            });
         });
     </script>
 </body>

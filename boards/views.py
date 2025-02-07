@@ -3,6 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from .models import Board
 from posts.models import Post
+from django.http import JsonResponse
 from .forms import BoardForm
 
 @login_required
@@ -29,16 +30,27 @@ def board_create(request):
 
 @login_required
 def board_update(request, board_id):
-    """Allow users to edit their board."""
+    """Allow users to edit their board via AJAX."""
     board = get_object_or_404(Board, id=board_id, user=request.user)
+
     if request.method == "POST":
         form = BoardForm(request.POST, instance=board)
         if form.is_valid():
             form.save()
-            return redirect('board_list')
-    else:
-        form = BoardForm(instance=board)
-    return render(request, 'board_form.html', {'form': form})
+
+            # Return JSON response instead of redirecting
+            return JsonResponse({
+                "success": True,
+                "message": "Board updated successfully!",
+                "board_id": board.id,
+                "board_name": board.name,
+                "board_description": board.description
+            })
+
+        return JsonResponse({"success": False, "error": form.errors}, status=400)
+
+    # ✅ Change error message to make debugging easier
+    return JsonResponse({"error": "Invalid request. Only POST requests are allowed."}, status=400)
 
 @login_required
 def board_delete(request, board_id):

@@ -36,7 +36,7 @@ header {
 /* Create Post Button Styling */
 .create-btn {
     text-decoration: none;
-    color: black; /* Black text */
+    color: white; /* Black text */
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 24px;
@@ -44,8 +44,8 @@ header {
     display: flex;
     align-items: center;
     gap: 5px;
-    background-color: transparent; /* No background */
-    border: 1px solid #ccc; /* Optional: Add a border */
+    background-color: #cc001e; /* No background */
+
 }
 
 .create-btn:hover {
@@ -90,7 +90,7 @@ header {
 /* Button Styling */
 .btn {
     padding: 10px 20px;
-    background-color: #e60023;
+    background-color: #cc001e;;
     color: white;
     border: none;
     border-radius: 24px;
@@ -104,6 +104,15 @@ header {
 }
 
 .create-board-btn {
-    width: 100%;
-    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px; /* Set a fixed width */
+    margin: 10px auto; /* Centers it horizontally */
+    padding: 12px 20px;
+    background-color: #cc001e;;
+    color: white;
+    text-decoration: none;
+    border-radius: 24px;
+    transition: background-color 0.3s;
 }

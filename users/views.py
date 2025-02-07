@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import CustomUser, Follow
+from posts.models import Post  # Import the Post model
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm
 
 # User Registration View
@@ -47,42 +48,48 @@ def user_logout(request):
     logout(request)
     return redirect('index') 
 
-# Profile View
 @login_required
-def profile(request, user_id):
-    """Display user profile with follow/unfollow functionality."""
-    user = get_object_or_404(CustomUser, id=user_id)
-
-    # Check if the logged-in user is following the profile user
-    is_following = request.user.following.filter(following=user).exists() if request.user != user else False
+def profile(request, user_id=None):
+    """Display and update user profile with followers and following count."""
     
+    # Determine which user profile to show
+    if user_id:
+        user = get_object_or_404(CustomUser, id=user_id)
+    else:
+        user = request.user  # Default to logged-in user
+
+    # Count followers & following
+    followers_count = user.followers.count()
+    following_count = user.following.count()
+
+    # Check if the logged-in user is following this user
+    is_following = request.user.following.filter(following=user).exists() if request.user != user else False
+
     if request.method == "POST":
-        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)  # Include request.FILES
         if form.is_valid():
-            form.save()
+            updated_user = form.save()
             return JsonResponse({
-                "username": request.user.username,
-                "email": request.user.email,
-                "bio": request.user.bio,
-                "profile_picture": request.user.profile_picture.url if request.user.profile_picture else None
+                "username": updated_user.username,
+                "email": updated_user.email,
+                "bio": updated_user.bio,
+                "profile_picture": updated_user.profile_picture.url if updated_user.profile_picture else None
             })
         else:
             return JsonResponse({"error": "Invalid data."}, status=400)
-    
-    else:
-        form = UserUpdateForm(instance=request.user)
 
     return render(request, 'profile.html', {
-        'form': form,
         'user': user,
         'is_following': is_following,
+        'followers_count': followers_count,
+        'following_count': following_count
     })
 
-# Home View
-@login_required
+
 def home(request):
-    """Home page after login."""
-    return render(request, "home.html", {'user': request.user})
+    posts = Post.objects.all().order_by('-created_at')  # Adjust ordering if needed
+    return render(request, "home.html", {"posts": posts})
+
 
 # Follow User View
 @login_required
@@ -103,7 +110,7 @@ def follow_user(request, user_id):
         else:
             return JsonResponse({"error": "You are already following this user."}, status=400)
 
-# Unfollow User View
+
 @login_required
 def unfollow_user(request, user_id):
     """Allows a logged-in user to unfollow another user."""
@@ -131,3 +138,9 @@ def get_follow_data(request, user_id):
         "followers_count": followers_count,
         "following_count": following_count
     })
+
+@login_required
+def user_list(request):
+    """Display all registered users except the logged-in user."""
+    users = CustomUser.objects.exclude(id=request.user.id)
+    return render(request, "user_list.html", {"users": users})

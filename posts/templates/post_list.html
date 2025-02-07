@@ -1,52 +1,367 @@
 {% load static %}
+{% load custom_filters %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Posts</title>
-    <link rel="stylesheet" href="{% static 'home.css' %}">
+    <link rel="stylesheet" href="{% static 'post_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <a href="{% url 'home' %}">🏠 Home</a>
-        <a href="{% url 'posts:create_post' %}">➕ Create Post</a>
+        <a href="{% url 'home' %}" class="logo">Pinterest</a>
+        <a href="{% url 'posts:create_post' %}" class="create-btn">➕</a>
     </header>
 
     <main>
         <h2>All Posts</h2>
         <div class="post-container">
             {% for post in posts %}
-                <div class="post">
-                    <img src="{{ post.media.url }}" alt="{{ post.title }}" width="200">
-                    <h3>{{ post.title }}</h3>
-                    <p>{{ post.description }}</p>
-                    {% if post.user == user %}
-                        <form method="POST" action="{% url 'posts:delete_post' post.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Delete Post</button>
-                        </form>
-                    {% endif %}
-
-                    <!-- Like/Unlike Button -->
-                    {% if user.is_authenticated %}
-                        <form method="POST" action="{% url 'posts:like_post' post.id %}">
-                            {% csrf_token %}
-                            {% if user in post.likes.all %}
-                                <button type="submit">Unlike</button>  <!-- If already liked, show "Unlike" -->
-                            {% else %}
-                                <button type="submit">Like</button>  <!-- If not liked, show "Like" -->
+                <!-- Added data-post-id so reply forms can retrieve the post id -->
+                <div class="post" data-post-id="{{ post.id }}">
+                    <div class="post-header">
+                        <a href="{% url 'users:profile_with_id' post.user.id %}" class="user-profile">
+                            <img src="{{ post.user.profile_picture.url }}" alt="{{ post.user.username }}" class="profile-pic">
+                            <span>{{ post.user.username }}</span>
+                        </a>
+                        <div class="post-options">
+                            <button class="options-btn">&#8942;</button>
+                            <div class="options-dropdown">
+                                {% if post.user == request.user %}
+                                    <a href="{% url 'posts:delete_post' post.id %}" class="delete-option">Delete</a>
+                                {% endif %}
+                                <a href="{% url 'users:profile_with_id' post.user.id %}" class="profile-option">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="{{ post.media.url }}" alt="{{ post.title }}" class="post-image">
+                    <div class="post-content">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.description }}</p>
+                        <div class="post-actions">
+                            {% if request.user.is_authenticated and request.user != post.user %}
+                                <button id="followBtn-{{ post.user.id }}" class="follow-btn" data-user-id="{{ post.user.id }}">
+                                    {% if following_status|get_item:post.user.id %}Unfollow{% else %}Follow{% endif %}
+                                </button>
                             {% endif %}
-                        </form>
-                    {% endif %}
-
-                    <!-- Display the number of likes -->
-                    <p>{{ post.likes.count }} Likes</p>
+                            <div class="like-section">
+                                <form method="POST" action="{% url 'posts:like_post' post.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="like-btn">
+                                        <i class="fa-heart {% if user in post.likes.all %}fas liked{% else %}far{% endif %}"></i>
+                                    </button>
+                                </form>
+                                <span class="likes-count">{{ post.likes.count }}</span>
+                            </div>
+                            <button class="comment-toggle-btn" data-post-id="{{ post.id }}">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                        <div class="comment-section" id="comment-section-{{ post.id }}" style="display: none;">
+                            <div class="comments-list">
+                                {% for comment in post.comments.all %}
+                                    <div class="comment" data-comment-id="{{ comment.id }}">
+                                        <div class="comment-header">
+                                            <strong>{{ comment.user.username }}</strong>
+                                            <small>{{ comment.created_at|timesince }} ago</small>
+                                        </div>
+                                        <p>{{ comment.text }}</p>
+                                        <div class="comment-actions">
+                                            <button class="reply-btn" data-comment-id="{{ comment.id }}">
+                                                <i class="fas fa-reply"></i> Reply
+                                            </button>
+                                            {% if request.user == comment.user or request.user == post.user %}
+                                                <button class="delete-comment-btn" data-comment-id="{{ comment.id }}">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                                <button class="edit-comment-btn" data-comment-id="{{ comment.id }}">
+                                                    <i class="fas fa-pen"></i> Edit
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                        
+                                        <!-- Replies Section -->
+                                        <div class="replies">
+                                            {% for reply in comment.replies.all %}
+                                                <div class="reply" data-comment-id="{{ reply.id }}">
+                                                    <div class="reply-header">
+                                                        <strong>{{ reply.user.username }}</strong>
+                                                        <small>{{ reply.created_at|timesince }} ago</small>
+                                                    </div>
+                                                    <p>{{ reply.text }}</p>
+                                                    {% if request.user == reply.user %}
+                                                        <div class="reply-actions">
+                                                            <button class="edit-comment-btn" data-comment-id="{{ reply.id }}">
+                                                                <i class="fas fa-pen"></i> Edit
+                                                            </button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                        
+                                        <!-- Reply Form (Hidden by Default) -->
+                                        <form class="reply-form" data-comment-id="{{ comment.id }}" style="display: none;">
+                                            {% csrf_token %}
+                                            <input type="text" name="text" placeholder="Write a reply..." required>
+                                            <button type="submit">Post Reply</button>
+                                        </form>
+                                    </div>
+                                {% empty %}
+                                    <p>No comments yet.</p>
+                                {% endfor %}
+                            </div>
+                        
+                            <!-- Main Comment Form -->
+                            <form class="comment-form" data-post-id="{{ post.id }}">
+                                {% csrf_token %}
+                                <input type="text" name="text" placeholder="Write a comment..." required>
+                                <button type="submit">Post Comment</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             {% empty %}
                 <p>No posts available.</p>
             {% endfor %}
         </div>
     </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+            document.querySelectorAll(".follow-btn").forEach(button => {
+                button.addEventListener("click", async function () {
+                    const userId = this.getAttribute("data-user-id");
+                    const isFollowing = this.innerText.trim() === "Unfollow";
+                    const url = isFollowing 
+                        ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId)
+                        : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.message === "Followed successfully!") {
+                            this.innerText = "Unfollow";
+                        } else if (data.message === "Unfollowed successfully!") {
+                            this.innerText = "Follow";
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+
+            document.querySelectorAll(".options-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const dropdown = this.nextElementSibling;
+                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                });
+            });
+
+
+            document.querySelectorAll(".comment-toggle-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const commentSection = document.getElementById(`comment-section-${this.getAttribute("data-post-id")}`);
+                    commentSection.style.display = commentSection.style.display === "block" ? "none" : "block";
+                });
+            });
+        
+            // Add Comment / Reply Submission
+            document.addEventListener("submit", async function (e) {
+                if (e.target.matches(".comment-form, .reply-form")) {
+                    e.preventDefault();
+                    const postId = e.target.closest(".post").getAttribute("data-post-id");
+                    const text = e.target.querySelector("input[name='text']").value.trim();
+                    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+                    const parentCommentId = e.target.getAttribute("data-comment-id") || null;
+        
+                    if (!text) {
+                        alert("Comment cannot be empty!");
+                        return;
+                    }
+        
+                    try {
+                        const response = await fetch(`{% url 'posts:add_comment' 0 %}`.replace("0", postId), {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": csrfToken,
+                            },
+                            body: JSON.stringify({ text: text, parent_id: parentCommentId }),
+                        });
+        
+                        const data = await response.json();
+                        console.log("Comment/Reply response:", data);
+        
+                        if (data.id) {
+                            addCommentToDOM(postId, data, parentCommentId);
+                            e.target.querySelector("input[name='text']").value = ""; // Clear input field
+                            if (parentCommentId) e.target.style.display = "none"; // Hide reply form after posting
+                        } else {
+                            alert("Error posting comment.");
+                        }
+                    } catch (error) {
+                        console.error("Error posting comment:", error);
+                    }
+                }
+            });
+        
+            // Add Comment / Reply to the DOM
+            function addCommentToDOM(postId, commentData, parentId = null) {
+                console.log("Adding comment:", commentData);
+        
+                const commentElement = document.createElement("div");
+                commentElement.classList.add("comment");
+                commentElement.setAttribute("data-comment-id", commentData.id);
+                commentElement.innerHTML = `
+                    <div class="comment-header">
+                        <strong>${commentData.user}</strong>
+                        <small>${commentData.created_at} ago</small>
+                    </div>
+                    <p>${commentData.text}</p>
+                    <div class="comment-actions">
+                        <button class="reply-btn" data-comment-id="${commentData.id}">
+                            <i class="fas fa-reply"></i> Reply
+                        </button>
+                        <button class="edit-comment-btn" data-comment-id="${commentData.id}">
+                            <i class="fas fa-pen"></i> Edit
+                        </button>
+                        <button class="delete-comment-btn" data-comment-id="${commentData.id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+        
+                if (parentId) {
+                    const parentComment = document.querySelector(`[data-comment-id='${parentId}']`);
+                    let repliesContainer = parentComment.querySelector(".replies");
+                    if (!repliesContainer) {
+                        repliesContainer = document.createElement("div");
+                        repliesContainer.classList.add("replies");
+                        parentComment.appendChild(repliesContainer);
+                    }
+                    repliesContainer.appendChild(commentElement);
+                } else {
+                    document.getElementById(`comment-section-${postId}`).querySelector(".comments-list").appendChild(commentElement);
+                }
+            }
+        
+            // Use Event Delegation for Reply Button
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains("reply-btn")) {
+                    const commentId = event.target.getAttribute("data-comment-id");
+                    let replyForm = document.querySelector(`.reply-form[data-comment-id='${commentId}']`);
+        
+                    if (!replyForm) {
+                        replyForm = document.createElement("form");
+                        replyForm.classList.add("reply-form");
+                        replyForm.setAttribute("data-comment-id", commentId);
+                        replyForm.innerHTML = `
+                            <input type="text" name="text" placeholder="Write a reply..." required>
+                            <button type="submit">Post Reply</button>
+                        `;
+        
+                        const parentComment = document.querySelector(`[data-comment-id='${commentId}']`);
+                        let repliesContainer = parentComment.querySelector(".replies");
+                        if (!repliesContainer) {
+                            repliesContainer = document.createElement("div");
+                            repliesContainer.classList.add("replies");
+                            parentComment.appendChild(repliesContainer);
+                        }
+                        repliesContainer.appendChild(replyForm);
+                    }
+        
+                    replyForm.style.display = replyForm.style.display === "block" ? "none" : "block";
+                    replyForm.querySelector("input[name='text']").focus();
+                }
+            });
+        
+            // Delete Comment
+            document.addEventListener("click", async function (event) {
+                if (event.target.classList.contains("delete-comment-btn")) {
+                    const commentId = event.target.getAttribute("data-comment-id");
+                    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+        
+                    try {
+                        const response = await fetch(`{% url 'posts:delete_comment' 0 %}`.replace("0", commentId), {
+                            method: "POST",
+                            headers: { "X-CSRFToken": csrfToken },
+                        });
+        
+                        const data = await response.json();
+                        if (data.success) {
+                            document.querySelector(`[data-comment-id='${commentId}']`).remove();
+                        } else {
+                            alert("Error deleting comment.");
+                        }
+                    } catch (error) {
+                        console.error("Error deleting comment:", error);
+                    }
+                }
+            });
+        
+            // Edit Comment
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains("edit-comment-btn")) {
+                    const commentId = event.target.getAttribute("data-comment-id");
+                    const commentElement = document.querySelector(`[data-comment-id='${commentId}']`);
+                    let textElement = commentElement.querySelector("p");
+                    let inputField = document.createElement("input");
+                    inputField.type = "text";
+                    inputField.value = textElement.innerText;
+                    inputField.classList.add("edit-input");
+        
+                    let saveButton = document.createElement("button");
+                    saveButton.innerText = "Save";
+                    saveButton.classList.add("save-edit-btn");
+        
+                    textElement.replaceWith(inputField);
+                    event.target.replaceWith(saveButton);
+        
+                    saveButton.addEventListener("click", async function () {
+                        const newText = inputField.value.trim();
+                        if (!newText) {
+                            alert("Comment cannot be empty!");
+                            return;
+                        }
+        
+                        try {
+                            const response = await fetch(`{% url 'posts:edit_comment' 0 %}`.replace("0", commentId), {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                                },
+                                body: JSON.stringify({ text: newText }),
+                            });
+        
+                            const data = await response.json();
+                            if (data.success) {
+                                let updatedText = document.createElement("p");
+                                updatedText.innerText = newText;
+                                inputField.replaceWith(updatedText);
+                                saveButton.replaceWith(event.target); // Restore edit button
+                            } else {
+                                alert("Error updating comment.");
+                            }
+                        } catch (error) {
+                            console.error("Error updating comment:", error);
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
 </body>
 </html>
