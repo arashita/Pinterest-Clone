@@ -12,14 +12,13 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('logout/', user_logout, name='logout'),
     
-    # Profile views (current user & other users)
-    path('profile/', profile, name='profile'),  # Own profile
-    path('profile/<int:user_id>/', profile, name='profile_with_id'),  # Other user's profile
+
+    path('profile/', profile, name='profile'), 
+    path('profile/<int:user_id>/', profile, name='profile_with_id'),  
 
     path('users/', user_list, name='user_list'),
     path("", home, name="home"),
     
-    # Follow/unfollow users
     path("follow/<int:user_id>/", views.follow_user, name="follow_user"),
     path("unfollow/<int:user_id>/", views.unfollow_user, name="unfollow_user"),
     path("follow-data/<int:user_id>/", views.get_follow_data, name="follow_data"),

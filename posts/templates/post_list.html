@@ -118,7 +118,6 @@
                                             {% endfor %}
                                         </div>
 
-                                        <!-- Reply Form (Hidden by Default) -->
                                         <form class="reply-form" data-comment-id="{{ comment.id }}" style="display: none;">
                                             {% csrf_token %}
                                             <input type="text" name="text" placeholder="Write a reply..." required>
@@ -130,7 +129,6 @@
                                 {% endfor %}
                             </div>
 
-                            <!-- Main Comment Form -->
                             <form class="comment-form" data-post-id="{{ post.id }}">
                                 {% csrf_token %}
                                 <input type="text" name="text" placeholder="Write a comment..." required>
@@ -160,7 +158,6 @@
                         const commentsList = document.getElementById(`comment-section-${postId}`).querySelector(".comments-list");
                         commentsList.innerHTML = ""; // Clear existing comments
         
-                        // Add comments to DOM
                         data.comments.forEach(comment => addCommentToDOM(postId, comment, comment.parent_id));
                     }
                 } catch (error) {
@@ -173,7 +170,6 @@
                     const userId = this.getAttribute("data-user-id");
                     const isFollowing = this.classList.contains("unfollow");
         
-                    // Use the correct follow/unfollow URL
                     const url = isFollowing 
                         ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId)
                         : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
@@ -185,7 +181,6 @@
                         });
         
                         if (response.ok) {
-                            // ✅ Update all follow buttons for this user dynamically
                             document.querySelectorAll(`.follow-btn[data-user-id="${userId}"]`).forEach(btn => {
                                 if (isFollowing) {
                                     btn.innerText = "Follow";
@@ -215,20 +210,20 @@
                     const postId = this.getAttribute("data-post-id");
                     const commentSection = document.getElementById(`comment-section-${postId}`);
             
-                    // Hide all other comment sections
+
                     document.querySelectorAll(".comment-section").forEach(section => {
                         if (section !== commentSection) {
                             section.style.display = "none";
                         }
                     });
             
-                    // Toggle the clicked one
+
                     commentSection.style.display = (commentSection.style.display === "block") ? "none" : "block";
                 });
             });
 
             
-            // Add Comment / Reply Submission
+
             document.addEventListener("submit", async function (e) {
                 if (e.target.matches(".comment-form, .reply-form")) {
                     e.preventDefault();
@@ -308,13 +303,11 @@
                     document.getElementById(`comment-section-${postId}`).querySelector(".comments-list").appendChild(commentElement);
                 }
             
-                // Recursively add replies
                 if (Array.isArray(commentData.replies) && commentData.replies.length > 0) {
                     commentData.replies.forEach(reply => addCommentToDOM(postId, reply, commentData.id));
                 }
             }
         
-            // Use Event Delegation for Reply Button
             document.addEventListener("click", function (event) {
                 if (event.target.classList.contains("reply-btn")) {
                     const commentId = event.target.getAttribute("data-comment-id");
@@ -345,7 +338,6 @@
             });
 
         
-            // Delete Comment
             document.addEventListener("click", async function (event) {
                 if (event.target.classList.contains("delete-comment-btn")) {
                     const commentId = event.target.getAttribute("data-comment-id");
@@ -413,7 +405,7 @@
                                 let updatedText = document.createElement("p");
                                 updatedText.innerText = newText;
                                 inputField.replaceWith(updatedText);
-                                saveButton.replaceWith(event.target); // Restore edit button
+                                saveButton.replaceWith(event.target); 
                             } else {
                                 alert("Error updating comment.");
                             }
@@ -423,7 +415,6 @@
                     });
                 }
             });
-            // Load Comments on Page Load for Each Post
             document.querySelectorAll("[id^='comment-section-']").forEach(section => {
                 const postId = section.id.replace("comment-section-", "");
                 if (document.getElementById(`comment-section-${postId}`)){

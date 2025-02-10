@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import CustomUser, Follow
-from posts.models import Post  # Import the Post model
+from posts.models import Post 
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm
 
-# User Registration View
+
 def register(request):
     """Handles user registration."""
     if request.method == "POST":
@@ -24,7 +24,7 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
-# User Login View
+
 def user_login(request):
     """Handles user login."""
     if request.method == "POST":
@@ -41,7 +41,7 @@ def user_login(request):
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})
 
-# User Logout View
+
 def user_logout(request):
     """Handles user logout."""
     logout(request)
@@ -51,21 +51,19 @@ def user_logout(request):
 def profile(request, user_id=None):
     """Display and update user profile with followers and following count."""
     
-    # Determine which user profile to show
     if user_id:
         user = get_object_or_404(CustomUser, id=user_id)
     else:
-        user = request.user  # Default to logged-in user
+        user = request.user
 
-    # Count followers & following
+
     followers_count = user.followers.count()
     following_count = user.following.count()
 
-    # Check if the logged-in user is following this user
     is_following = request.user.following.filter(following=user).exists() if request.user != user else False
 
     if request.method == "POST":
-        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)  # Include request.FILES
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user) 
         if form.is_valid():
             updated_user = form.save()
             return JsonResponse({
@@ -91,18 +89,16 @@ def home(request):
     return render(request, "home.html", {"posts": posts})
 
 
-# Follow User View
+
 @login_required
 def follow_user(request, user_id):
     """Allows a logged-in user to follow another user."""
     if request.method == "POST":
         user_to_follow = get_object_or_404(CustomUser, id=user_id)
 
-        # Prevent self-following
         if user_to_follow == request.user:
             return JsonResponse({"error": "You cannot follow yourself."}, status=400)
 
-        # Check if already following
         follow, created = Follow.objects.get_or_create(follower=request.user, following=user_to_follow)
 
         if created:
@@ -117,7 +113,6 @@ def unfollow_user(request, user_id):
     if request.method == "POST":
         user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
 
-        # Check if following
         follow = Follow.objects.filter(follower=request.user, following=user_to_unfollow)
         
         if follow.exists():
@@ -126,7 +121,7 @@ def unfollow_user(request, user_id):
         else:
             return JsonResponse({"error": "You are not following this user."}, status=400)
 
-# Follow Data (followers/following count) View
+
 @login_required
 def get_follow_data(request, user_id):
     """Returns follow count data for a user."""

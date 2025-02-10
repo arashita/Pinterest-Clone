@@ -238,9 +238,9 @@ body {
     background-color: #5a6268;
     transform: translateY(-2px);
 }
-/* 🔴 Follow/Unfollow Button - Pinterest Style */
+
 .follow-btn {
-    background-color: #e60023; /* Pinterest Red */
+    background-color: #e60023; 
     color: white;
     border: none;
     padding: 10px 20px;

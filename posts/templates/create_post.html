@@ -38,19 +38,19 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="{{ form.title.id_for_label }}">Title</label>
-                {{ form.title }}  <!-- Title field -->
+                {{ form.title }}  
             </div>
             <div class="form-group">
                 <label for="{{ form.description.id_for_label }}">Description</label>
-                {{ form.description }}  <!-- Description field -->
+                {{ form.description }}  
             </div>
             <div class="form-group">
                 <label for="{{ form.media.id_for_label }}">Media</label>
-                {{ form.media }}  <!-- Media field -->
+                {{ form.media }}  
             </div>
             <div class="form-group">
                 <label for="{{ form.board.id_for_label }}">Board</label>
-                {{ form.board }}  <!-- Board selection dropdown -->
+                {{ form.board }}  
             </div>
             <button type="submit" class="post-btn">Post</button>
         </form>

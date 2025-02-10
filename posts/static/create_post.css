@@ -1,12 +1,10 @@
-/* General Styles */
 body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8; /* Softer background */
+    background-color: #f8f8f8; 
 }
 
-/* Header */
 header {
     display: flex;
     justify-content: space-between;
@@ -30,7 +28,6 @@ header {
     width: 40px;
 }
 
-/* View Pins Button */
 .view-posts-btn {
     text-decoration: none;
     color: white;
@@ -46,14 +43,12 @@ header {
     background-color: #ad081b;
 }
 
-/* Main Content */
 main {
     padding: 40px 20px;
     max-width: 500px;
     margin: 0 auto;
 }
 
-/* Form Title */
 h2 {
     text-align: center;
     font-size: 22px;
@@ -62,7 +57,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Create Post Form */
 .create-post-form {
     background-color: white;
     padding: 24px;
@@ -70,7 +64,6 @@ h2 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Groups */
 .form-group {
     margin-bottom: 15px;
 }
@@ -83,32 +76,31 @@ h2 {
     margin-bottom: 6px;
 }
 
-/* Input, Textarea, and Select */
 .form-group input,
 .form-group textarea,
 .form-group select {
-    width: 100%; /* Ensures full width */
+    width: 100%; 
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 12px;
     font-size: 14px;
     background-color: #f9f9f9;
     transition: border-color 0.3s ease;
-    box-sizing: border-box; /* Prevents width issues */
+    box-sizing: border-box; 
 }
 
-/* Make select dropdown match input height */
+
 .form-group select {
-    height: 44px; /* Ensure uniform height */
-    padding-right: 40px; /* Space for dropdown arrow */
-    appearance: none; /* Removes default browser styling */
+    height: 44px; 
+    padding-right: 40px; 
+    appearance: none; 
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); 
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
 }
 
-/* Ensure all form elements stay inside the container */
+
 .create-post-form {
     display: flex;
     flex-direction: column;
@@ -124,27 +116,27 @@ h2 {
     box-shadow: 0 0 6px rgba(230, 0, 35, 0.2);
 }
 
-/* Post Button */
+
 .post-btn {
-    width: 40%; /* Adjusts width to fit content */
-    padding: 8px 16px; /* Reduced padding */
+    width: 40%; 
+    padding: 8px 16px; 
     background-color: #e60023;
     color: white;
     border: none;
-    border-radius: 20px; /* Smaller, rounded corners */
-    font-size: 14px; /* Slightly smaller text */
+    border-radius: 20px; 
+    font-size: 14px; 
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     display: block;
-    margin: 10px auto; /* Centering */
+    margin: 10px auto; 
 }
 
 .post-btn:hover {
     background-color: #ad081b;
 }
 
-/* Mobile Responsive */
+
 @media (max-width: 600px) {
     main {
         padding: 20px;

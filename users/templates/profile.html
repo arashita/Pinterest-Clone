@@ -27,7 +27,6 @@
                 <p id="profile-email">{{ user.email }}</p>
                 <p id="profile-bio">{% if user.bio %}{{ user.bio }}{% else %}No bio available.{% endif %}</p>
 
-                <!-- Followers & Following Count -->
                 <p><strong>Followers:</strong> <span id="followers-count">{{ followers_count }}</span></p>
                 <p><strong>Following:</strong> <span id="following-count">{{ following_count }}</span></p>
 
@@ -92,12 +91,11 @@
 
             if (followForm) {
                 followForm.addEventListener("submit", async function (event) {
-                    event.preventDefault();  // Stop normal form submission
+                    event.preventDefault();  
 
                     const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
                     const followButton = followForm.querySelector(".follow-btn");
                     
-                    // ✅ Get user ID properly
                     const userId = followButton.getAttribute("data-user-id");
                     if (!userId) {
                         console.error("Error: userId is null. Check if data-user-id is missing in the button.");
@@ -106,7 +104,6 @@
 
                     const isFollowing = followButton.innerText.trim() === "Unfollow";
 
-                    // ✅ Use correct follow/unfollow URL dynamically
                     const url = isFollowing 
                         ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId) 
                         : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
@@ -118,11 +115,11 @@
                         });
 
                         if (response.ok) {
-                            // ✅ Update follow button dynamically
+
                             followButton.innerText = isFollowing ? "Follow" : "Unfollow";
                             followButton.classList.toggle("unfollow", !isFollowing);
 
-                            // ✅ Update followers count dynamically on profile page
+
                             const followersCountElem = document.getElementById("followers-count");
                             if (followersCountElem) {
                                 let count = parseInt(followersCountElem.textContent);

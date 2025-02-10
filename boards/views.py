@@ -38,7 +38,7 @@ def board_update(request, board_id):
         if form.is_valid():
             form.save()
 
-            # Return JSON response instead of redirecting
+
             return JsonResponse({
                 "success": True,
                 "message": "Board updated successfully!",
@@ -49,7 +49,7 @@ def board_update(request, board_id):
 
         return JsonResponse({"success": False, "error": form.errors}, status=400)
 
-    # ✅ Change error message to make debugging easier
+
     return JsonResponse({"error": "Invalid request. Only POST requests are allowed."}, status=400)
 
 @login_required
@@ -58,7 +58,7 @@ def board_delete(request, board_id):
     board = get_object_or_404(Board, id=board_id, user=request.user)
     if request.method == "POST":
         board.delete()
-        return redirect('boards:board_list')  # Redirect to the board list page
+        return redirect('boards:board_list')  
     return render(request, 'board_confirm_delete.html', {'board': board})
 
 @login_required
@@ -66,9 +66,8 @@ def board_detail(request, board_id):
     """Ensure only board owners can manage their board."""
     board = get_object_or_404(Board, id=board_id)
 
-    # Restrict board access
     if board.user != request.user:
-        return redirect('boards:board_list')  # Redirect if the board isn't theirs
+        return redirect('boards:board_list')  
 
     posts = Post.objects.filter(board=board)
     return render(request, "board_detail.html", {"board": board, "posts": posts})

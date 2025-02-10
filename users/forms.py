@@ -5,7 +5,7 @@ from .models import CustomUser
 class UserRegisterForm(UserCreationForm):
     """Form for user registration."""
     email = forms.EmailField(required=True)
-    profile_picture = forms.ImageField(required=False)  # Optional profile picture
+    profile_picture = forms.ImageField(required=False) 
     bio = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
@@ -23,4 +23,4 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'bio', 'profile_picture']
-    profile_picture = forms.ImageField(required=False)  # Allow optional upload
+    profile_picture = forms.ImageField(required=False)  

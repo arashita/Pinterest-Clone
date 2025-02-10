@@ -36,7 +36,6 @@
         </div>
         <div class="right-section">
             {% if user.is_authenticated %}
-                <!-- Show Profile Icon & Logout Button -->
                 <div class="profile-container">
                     <a href="{% url 'users:profile' %}" class="profile-icon">
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
@@ -47,7 +46,6 @@
                     <a href="{% url 'users:logout' %}" class="btn-logout">Log out</a>
                 </div>
             {% else %}
-                <!-- Show Login & Register Buttons for Logged-Out Users -->
                 <a href="{% url 'users:login' %}" class="btn-login">Log in</a>
                 <a href="{% url 'users:register' %}" class="btn-signup">Sign up</a>
             {% endif %}

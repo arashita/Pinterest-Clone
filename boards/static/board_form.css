@@ -1,4 +1,3 @@
-/* Header Styling */
 body{
     font-family: Arial, sans-serif;
 }
@@ -17,26 +16,24 @@ header {
 .left-section {
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between logo and button */
+    gap: 10px; 
 }
 
-/* Pinterest Logo Styling */
 .logo {
     display: flex;
     align-items: center;
 }
 
 .logo svg {
-    height: 40px; /* Adjust size as needed */
+    height: 40px; 
     width: 40px;
-    /* Adjust size as needed */
-  margin-top: 9px;
+    margin-top: 9px;
 }
 
-/* Create Post Button Styling */
+
 .create-btn {
     text-decoration: none;
-    color: white; /* Black text */
+    color: white; 
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 24px;
@@ -44,15 +41,15 @@ header {
     display: flex;
     align-items: center;
     gap: 5px;
-    background-color: #cc001e; /* No background */
+    background-color: #cc001e; 
 
 }
 
 .create-btn:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
+    background-color: #f0f0f0; 
 }
 
-/* Form Styling */
+
 .board-form {
     max-width: 600px;
     margin: 0 auto;
@@ -87,7 +84,7 @@ header {
     min-height: 100px;
 }
 
-/* Button Styling */
+
 .btn {
     padding: 10px 20px;
     background-color: #cc001e;;
@@ -107,8 +104,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 200px; /* Set a fixed width */
-    margin: 10px auto; /* Centers it horizontally */
+    width: 200px; 
+    margin: 10px auto; 
     padding: 12px 20px;
     background-color: #cc001e;;
     color: white;
