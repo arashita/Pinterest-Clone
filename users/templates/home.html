@@ -29,18 +29,28 @@
             </a>
             <a href="{% url 'home' %}" class="nav-link active">Home</a>
             <a href="{% url 'boards:board_list' %}" class="nav-link">Boards</a>
-            <a href="{% url 'posts:create_post' %}" class="nav-link">Add Pin</a>
+            <a href="{% url 'posts:post_list' %}" class="nav-link">Pins</a>
         </div>
         <div class="search-bar">
             <input type="text" placeholder="Search...">
         </div>
-        <div class="profile">
-            <a href="{% url 'users:profile' %}">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="6" r="4" fill="currentColor" />
-                    <path d="M20 22H4C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22Z" fill="currentColor" />
-                </svg>
-            </a>
+        <div class="right-section">
+            {% if user.is_authenticated %}
+                <!-- Show Profile Icon & Logout Button -->
+                <div class="profile-container">
+                    <a href="{% url 'users:profile' %}" class="profile-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="6" r="4" fill="currentColor" />
+                            <path d="M20 22H4C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22Z" fill="currentColor" />
+                        </svg>
+                    </a>
+                    <a href="{% url 'users:logout' %}" class="btn-logout">Log out</a>
+                </div>
+            {% else %}
+                <!-- Show Login & Register Buttons for Logged-Out Users -->
+                <a href="{% url 'users:login' %}" class="btn-login">Log in</a>
+                <a href="{% url 'users:register' %}" class="btn-signup">Sign up</a>
+            {% endif %}
         </div>
     </header>
     

@@ -32,14 +32,17 @@
                 <p><strong>Following:</strong> <span id="following-count">{{ following_count }}</span></p>
 
                 {% if user != request.user %}
-                    <form id="follow-form" action="{% url 'users:follow_user' user.id %}" method="POST">
-                        {% csrf_token %}
+                <form id="follow-form" action="{% url 'users:follow_user' user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="follow-btn {% if is_following %}unfollow{% endif %}" 
+                            data-user-id="{{ user.id }}">
                         {% if is_following %}
-                            <button type="submit" class="follow-btn">Unfollow</button>
+                            Unfollow
                         {% else %}
-                            <button type="submit" class="follow-btn">Follow</button>
+                            Follow
                         {% endif %}
-                    </form>
+                    </button>
+                </form>
                 {% endif %}
 
                 {% if user == request.user %}
@@ -47,38 +50,40 @@
                 {% endif %}
             </div>
         </div>
-
-        <div class="edit-profile-form" id="edit-profile-form" style="display: none;">
-            <form id="edit-form" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="edit-name">Name:</label>
-                    <input type="text" id="edit-name" name="username" value="{{ user.username }}">
-                </div>
-                <div class="form-group">
-                    <label for="edit-bio">Bio:</label>
-                    <textarea id="edit-bio" name="bio">{% if user.bio %}{{ user.bio }}{% endif %}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="edit-email">Email:</label>
-                    <input type="email" id="edit-email" name="email" value="{{ user.email }}">
-                </div>
-                <div class="form-group">
-                    <label for="edit-profile-picture">Change Profile Picture:</label>
-                    <input type="file" id="edit-profile-picture-form" name="profile_picture" accept="image/*">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="save-btn">Save Changes</button>
-                    <button type="button" class="cancel-btn" id="cancel-edit-btn">Cancel</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="profile-actions">
-            <a href="{% url 'home' %}" class="home-btn">Home</a>
-            <button class="create-board-btn">Create Board</button>
-            <a href="{% url 'users:logout' %}" class="logout-btn">Logout</a>
-        </div>
+        {% if user == request.user %}
+            <div class="edit-profile-form" id="edit-profile-form" style="display: none;">
+                <form id="edit-form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="edit-name">Name:</label>
+                        <input type="text" id="edit-name" name="username" value="{{ user.username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bio">Bio:</label>
+                        <textarea id="edit-bio" name="bio">{% if user.bio %}{{ user.bio }}{% endif %}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email:</label>
+                        <input type="email" id="edit-email" name="email" value="{{ user.email }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-picture">Change Profile Picture:</label>
+                        <input type="file" id="edit-profile-picture-form" name="profile_picture" accept="image/*">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Changes</button>
+                        <button type="button" class="cancel-btn" id="cancel-edit-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+        {% if user == request.user %}
+            <div class="profile-actions">
+                <a href="{% url 'home' %}" class="home-btn">Home</a>
+                <a href="{% url 'boards:board_create' %}" class="create-board-btn">Create Board</a>
+                <a href="{% url 'users:logout' %}" class="logout-btn">Logout</a>
+            </div>
+        {% endif %}
     </div>
 
     <script>
@@ -87,35 +92,48 @@
 
             if (followForm) {
                 followForm.addEventListener("submit", async function (event) {
-                    event.preventDefault();
+                    event.preventDefault();  // Stop normal form submission
 
-                    const formData = new FormData(followForm);
                     const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-                    const actionURL = followForm.action;
+                    const followButton = followForm.querySelector(".follow-btn");
+                    
+                    // ✅ Get user ID properly
+                    const userId = followButton.getAttribute("data-user-id");
+                    if (!userId) {
+                        console.error("Error: userId is null. Check if data-user-id is missing in the button.");
+                        return;
+                    }
+
+                    const isFollowing = followButton.innerText.trim() === "Unfollow";
+
+                    // ✅ Use correct follow/unfollow URL dynamically
+                    const url = isFollowing 
+                        ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId) 
+                        : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
 
                     try {
-                        const response = await fetch(actionURL, {
+                        const response = await fetch(url, {
                             method: "POST",
                             headers: { "X-CSRFToken": csrfToken },
-                            body: formData,
                         });
 
-                        const data = await response.json();
-                        const followersCountElem = document.getElementById("followers-count");
+                        if (response.ok) {
+                            // ✅ Update follow button dynamically
+                            followButton.innerText = isFollowing ? "Follow" : "Unfollow";
+                            followButton.classList.toggle("unfollow", !isFollowing);
 
-                        if (data.message.includes("Followed")) {
-                            followForm.innerHTML = '<button type="submit" class="follow-btn">Unfollow</button>';
-                            followersCountElem.textContent = parseInt(followersCountElem.textContent) + 1;
-                        } else if (data.message.includes("Unfollowed")) {
-                            followForm.innerHTML = '<button type="submit" class="follow-btn">Follow</button>';
-                            followersCountElem.textContent = Math.max(0, parseInt(followersCountElem.textContent) - 1);
+                            // ✅ Update followers count dynamically on profile page
+                            const followersCountElem = document.getElementById("followers-count");
+                            if (followersCountElem) {
+                                let count = parseInt(followersCountElem.textContent);
+                                followersCountElem.textContent = isFollowing ? Math.max(0, count - 1) : count + 1;
+                            }
                         }
                     } catch (error) {
                         console.error("Error:", error);
                     }
                 });
             }
-
             const editProfileBtn = document.getElementById("edit-profile-btn");
             const editForm = document.getElementById("edit-profile-form");
             const cancelEditBtn = document.getElementById("cancel-edit-btn");
@@ -170,6 +188,10 @@
                 }
             });
         });
+        function getCSRFToken() {
+            return document.querySelector("[name=csrfmiddlewaretoken]").value;
+        }
+        
     </script>
 </body>
 </html>

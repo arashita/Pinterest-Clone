@@ -18,6 +18,13 @@ header {
     top: 0;
     z-index: 1000;
 }
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e60023;
+    text-decoration: none;
+    margin-top: 10px;
+}
 
 /* Left Section */
 .left-section {
@@ -42,7 +49,7 @@ header {
     text-decoration: none;
     color: white;
     font-weight: bold;
-    background-color: #cc001e;
+    background-color: #e60023;
     padding: 10px 16px;
     border-radius: 24px;
     transition: background-color 0.3s ease;
@@ -63,7 +70,7 @@ main {
 .create-board-btn {
     display: inline-block;
     padding: 12px 20px;
-    background-color: #cc001e;
+    background-color: #e60023;
     color: white;
     text-decoration: none;
     border-radius: 24px;
@@ -132,19 +139,19 @@ main {
 }
 
 .view-btn {
-    background-color: #cc001e;
+    background-color: #e60023;
     color: white;
     width: 40px;
     height: 40px;
 }
 
 .edit-btn {
-    background-color: #cc001e;
+    background-color: #e60023;
     color: white;
 }
 
 .delete-btn {
-    background-color: #cc001e;
+    background-color: #e60023;
     color: white;
 }
 
@@ -173,27 +180,87 @@ main {
     transform: translate(-50%, -50%);
     background: white;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 350px;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    width: 380px;
+    max-width: 90%;
     z-index: 2000;
     text-align: center;
+    animation: fadeIn 0.2s ease-in-out;
 }
 
 /* Form Fields */
 #edit-board-form input,
 #edit-board-form textarea {
-    width: 100%;
-    padding: 10px;
+    width: calc(100% - 24px); /* Subtract padding to prevent touching edges */
+    padding: 12px;
     margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    font-size: 14px;
+    background: #fafafa;
+    transition: 0.3s;
 }
 
+#edit-board-form input:focus,
+#edit-board-form textarea:focus {
+    border-color: #e60023; /* Pinterest red */
+    background: #fff;
+    box-shadow: 0 0 5px rgba(230, 0, 35, 0.2);
+    outline: none;
+}
+
+/* Submit Button */
+#edit-board-form button {
+    width: auto;
+    padding: 8px 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 20px;
+    background: #e60023; /* Pinterest red */
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-block;
+}
+
+#edit-board-form button:hover {
+    background: #ad081b; /* Darker red */
+}
+
+/* Close Button */
+#close-edit-form {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #555;
+    transition: 0.2s;
+}
+
+#close-edit-form:hover {
+    color: #000;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -55%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
 /* Save & Cancel Buttons */
 .save-btn {
-    background-color: #cc001e;
+    background-color: #e60023;
     color: white;
     border: none;
     padding: 10px 16px;

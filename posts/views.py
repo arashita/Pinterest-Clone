@@ -70,53 +70,54 @@ def like_post(request, post_id):
 
 
 
+
 def get_comments(request, post_id):
-    """Fetch all comments for a post, including threaded replies correctly."""
+    """Fetch all comments for a post, including nested replies."""
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post=post, parent=None).prefetch_related("replies")
 
     def serialize_comment(comment):
-        """Recursive function to structure threaded comments correctly."""
+        """Recursive function to structure nested comments properly."""
         return {
             "id": comment.id,
             "user": comment.user.username,
             "text": comment.text,
             "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M"),
-            "replies": [serialize_comment(reply) for reply in comment.replies.all()],  # Proper nesting
+            "parent_id": comment.parent.id if comment.parent else None,  # Explicitly add parent_id
+            "replies": [serialize_comment(reply) for reply in comment.replies.all()],
         }
 
     comments_data = [serialize_comment(comment) for comment in comments]
     return JsonResponse({"comments": comments_data})
 
+
 @login_required
 def add_comment(request, post_id):
-    """Handles comment and reply submission via AJAX with proper nesting."""
+    """Handles adding new comments and nested replies."""
     if request.method == "POST":
         post = get_object_or_404(Post, id=post_id)
 
         try:
-            data = json.loads(request.body)  # Parse JSON request
+            data = json.loads(request.body)
             text = data.get("text", "").strip()
-            parent_id = data.get("parent_id")  # Optional parent comment ID
+            parent_id = data.get("parent_id")  # Optional for replies
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
         if not text:
             return JsonResponse({"error": "Comment cannot be empty"}, status=400)
 
-        # Fetch parent comment if `parent_id` is provided
+        # Validate parent comment (if it's a reply)
         parent_comment = None
         if parent_id:
-            parent_comment = get_object_or_404(Comment, id=parent_id, post=post)  # Ensure correct parent
-            if not parent_comment:
-                return JsonResponse({"error": "Parent comment not found"}, status=400)
+            parent_comment = get_object_or_404(Comment, id=parent_id, post=post)
 
-        # Create the new comment or reply
+        # Create the new comment/reply
         new_comment = Comment.objects.create(
             user=request.user,
             post=post,
             text=text,
-            parent=parent_comment  # Properly link reply
+            parent=parent_comment
         )
 
         return JsonResponse({
@@ -124,23 +125,31 @@ def add_comment(request, post_id):
             "user": new_comment.user.username,
             "text": new_comment.text,
             "created_at": new_comment.created_at.strftime("%Y-%m-%d %H:%M"),
-            "parent_id": parent_id  # Ensure frontend knows if it's a reply
+            "parent_id": parent_id
         })
+
 
 @login_required
 def delete_comment(request, comment_id):
     """Allows users to delete their own comments or any comment on their post."""
     comment = get_object_or_404(Comment, id=comment_id)
 
-    # Delete the comment and all its nested replies
-    if request.user == comment.user or request.user == comment.post.user:
-        comment.delete()  # Django automatically deletes child comments
-        return JsonResponse({"success": True, "message": "Comment deleted successfully"})
-    else:
+    # Check if user has permission to delete
+    if request.user != comment.user and request.user != comment.post.user:
         return JsonResponse({"success": False, "error": "You do not have permission to delete this comment"}, status=403)
 
+    # Recursively delete the comment and all its replies
+    def delete_nested_comments(comment):
+        for reply in comment.replies.all():
+            delete_nested_comments(reply)
+        comment.delete()
+
+    delete_nested_comments(comment)
+
+    return JsonResponse({"success": True, "message": "Comment and all replies deleted successfully"})
+
+
 @login_required
-@csrf_exempt
 def edit_comment(request, comment_id):
     """Allows users to edit their own comments."""
     comment = get_object_or_404(Comment, id=comment_id, user=request.user)

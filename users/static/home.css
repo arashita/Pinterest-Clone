@@ -70,18 +70,84 @@ header {
     outline: none;
 }
 
-/* Profile Icon */
-.profile a {
+/* 🔴 Pinterest Login Button */
+.btn-login {
+    background-color: #e60023;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-login:hover {
+    background-color: rgba(230, 0, 35, 0.1);
+}
+
+/* 🔴 Pinterest Sign Up Button */
+.btn-signup {
+    background-color: #e60023;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-signup:hover {
+    background-color: #cc001f;
+}
+
+
+.right-section {
     display: flex;
     align-items: center;
+    gap: 20px;
 }
 
-.profile svg {
-    width: 30px;
-    height: 30px;
-    fill: #333;
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
+
+.profile-icon svg {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.profile-icon svg:hover {
+    transform: scale(1.1);
+}
+
+/* 🔴 Logout Button */
+.btn-logout {
+    background-color: #e60023;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-logout:hover {
+    background-color: #cc001f;
+}
 /* Main Content */
 main {
     padding: 20px;

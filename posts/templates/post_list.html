@@ -12,7 +12,23 @@
 </head>
 <body>
     <header>
-        <a href="{% url 'home' %}" class="logo">Pinterest</a>
+        <a href="{% url 'home' %}" class="logo">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 5.69373 17.3488 C 5.58145 16.327 5.66114 15.3484 5.8857 14.4022 L 6.7912 10.5237 
+                C 6.6427 10.0524 6.53042 9.51268 6.53042 8.97302 C 6.53042 7.71376 7.14253 6.81431 8.10236 
+                6.81431 C 8.76878 6.81431 9.25776 7.27483 9.25776 8.16349 C 9.25776 8.44414 9.1998 8.76074 
+                9.08752 9.12053 L 8.69274 10.4121 C 8.61305 10.6604 8.58046 10.8943 8.58046 11.0993 C 8.58046 
+                11.9988 9.27225 12.5061 10.1524 12.5061 C 11.7243 12.5061 12.8471 10.8871 12.8471 8.78593 C 
+                12.8471 6.44733 11.3078 4.95063 9.0332 4.95063 C 6.49781 4.95063 4.88966 6.59124 4.88966 8.87587 
+                C 4.88966 9.79693 5.17218 10.6532 5.72635 11.236 C 5.54524 11.5383 5.35327 11.5958 5.0599 
+                11.5958 C 4.15441 11.5958 3.29237 10.3258 3.29237 8.59525 C 3.29237 5.60545 5.7046 3.22007 
+                9.08752 3.22007 C 12.6407 3.22007 14.8718 5.681 14.8718 8.71758 C 14.8718 11.7757 12.6986 
+                14.0712 10.3552 14.0712 C 9.42799 14.0712 8.61305 13.679 8.0444 12.9702 L 7.58079 14.8375 
+                C 7.33088 15.8053 6.9578 16.7156 6.35656 17.5934 C 7.20411 17.8525 8.0444 18 9.05131 18 
+                C 14.0532 18 18.1062 13.974 18.1062 9.0054 C 18.1062 4.03677 14.0569 0 9.05493 0 C 4.05299 0 
+                0 4.02599 0 8.9946 C 0 12.7616 2.33256 16.0104 5.69373 17.3488 Z" fill="rgb(230, 0, 35)"/>
+            </svg>
+        </a>
         <a href="{% url 'posts:create_post' %}" class="create-btn">➕</a>
     </header>
 
@@ -20,7 +36,6 @@
         <h2>All Posts</h2>
         <div class="post-container">
             {% for post in posts %}
-                <!-- Added data-post-id so reply forms can retrieve the post id -->
                 <div class="post" data-post-id="{{ post.id }}">
                     <div class="post-header">
                         <a href="{% url 'users:profile_with_id' post.user.id %}" class="user-profile">
@@ -59,6 +74,7 @@
                             <button class="comment-toggle-btn" data-post-id="{{ post.id }}">
                                 <i class="fas fa-comment"></i>
                             </button>
+                            
                         </div>
                         <div class="comment-section" id="comment-section-{{ post.id }}" style="display: none;">
                             <div class="comments-list">
@@ -71,19 +87,18 @@
                                         <p>{{ comment.text }}</p>
                                         <div class="comment-actions">
                                             <button class="reply-btn" data-comment-id="{{ comment.id }}">
-                                                <i class="fas fa-reply"></i> Reply
+                                                <i class="fas fa-reply"></i> 
                                             </button>
                                             {% if request.user == comment.user or request.user == post.user %}
                                                 <button class="delete-comment-btn" data-comment-id="{{ comment.id }}">
-                                                    <i class="fas fa-trash"></i> Delete
+                                                    <i class="fas fa-trash"></i> 
                                                 </button>
                                                 <button class="edit-comment-btn" data-comment-id="{{ comment.id }}">
-                                                    <i class="fas fa-pen"></i> Edit
+                                                    <i class="fas fa-pen"></i> 
                                                 </button>
                                             {% endif %}
                                         </div>
-                        
-                                        <!-- Replies Section -->
+
                                         <div class="replies">
                                             {% for reply in comment.replies.all %}
                                                 <div class="reply" data-comment-id="{{ reply.id }}">
@@ -102,7 +117,7 @@
                                                 </div>
                                             {% endfor %}
                                         </div>
-                        
+
                                         <!-- Reply Form (Hidden by Default) -->
                                         <form class="reply-form" data-comment-id="{{ comment.id }}" style="display: none;">
                                             {% csrf_token %}
@@ -114,7 +129,7 @@
                                     <p>No comments yet.</p>
                                 {% endfor %}
                             </div>
-                        
+
                             <!-- Main Comment Form -->
                             <form class="comment-form" data-post-id="{{ post.id }}">
                                 {% csrf_token %}
@@ -128,31 +143,58 @@
                 <p>No posts available.</p>
             {% endfor %}
         </div>
+        
     </main>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
+            function getCSRFToken() {
+                return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+            }
+            async function loadComments(postId) {
+                try {
+                    const response = await fetch(`/posts/comments/${postId}/`);
+                    const data = await response.json();
+        
+                    if (data.comments) {
+                        const commentsList = document.getElementById(`comment-section-${postId}`).querySelector(".comments-list");
+                        commentsList.innerHTML = ""; // Clear existing comments
+        
+                        // Add comments to DOM
+                        data.comments.forEach(comment => addCommentToDOM(postId, comment, comment.parent_id));
+                    }
+                } catch (error) {
+                    console.error("Error loading comments:", error);
+                }
+            }
 
             document.querySelectorAll(".follow-btn").forEach(button => {
                 button.addEventListener("click", async function () {
                     const userId = this.getAttribute("data-user-id");
-                    const isFollowing = this.innerText.trim() === "Unfollow";
+                    const isFollowing = this.classList.contains("unfollow");
+        
+                    // Use the correct follow/unfollow URL
                     const url = isFollowing 
                         ? `{% url 'users:unfollow_user' 0 %}`.replace("0", userId)
                         : `{% url 'users:follow_user' 0 %}`.replace("0", userId);
+        
                     try {
                         const response = await fetch(url, {
                             method: "POST",
-                            headers: {
-                                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
-                            },
+                            headers: { "X-CSRFToken": getCSRFToken() },
                         });
-                        const data = await response.json();
-                        if (data.message === "Followed successfully!") {
-                            this.innerText = "Unfollow";
-                        } else if (data.message === "Unfollowed successfully!") {
-                            this.innerText = "Follow";
+        
+                        if (response.ok) {
+                            // ✅ Update all follow buttons for this user dynamically
+                            document.querySelectorAll(`.follow-btn[data-user-id="${userId}"]`).forEach(btn => {
+                                if (isFollowing) {
+                                    btn.innerText = "Follow";
+                                    btn.classList.remove("unfollow");
+                                } else {
+                                    btn.innerText = "Unfollow";
+                                    btn.classList.add("unfollow");
+                                }
+                            });
                         }
                     } catch (error) {
                         console.error("Error:", error);
@@ -168,30 +210,40 @@
                 });
             });
 
-
             document.querySelectorAll(".comment-toggle-btn").forEach(button => {
                 button.addEventListener("click", function () {
-                    const commentSection = document.getElementById(`comment-section-${this.getAttribute("data-post-id")}`);
-                    commentSection.style.display = commentSection.style.display === "block" ? "none" : "block";
+                    const postId = this.getAttribute("data-post-id");
+                    const commentSection = document.getElementById(`comment-section-${postId}`);
+            
+                    // Hide all other comment sections
+                    document.querySelectorAll(".comment-section").forEach(section => {
+                        if (section !== commentSection) {
+                            section.style.display = "none";
+                        }
+                    });
+            
+                    // Toggle the clicked one
+                    commentSection.style.display = (commentSection.style.display === "block") ? "none" : "block";
                 });
             });
-        
+
+            
             // Add Comment / Reply Submission
             document.addEventListener("submit", async function (e) {
                 if (e.target.matches(".comment-form, .reply-form")) {
                     e.preventDefault();
                     const postId = e.target.closest(".post").getAttribute("data-post-id");
                     const text = e.target.querySelector("input[name='text']").value.trim();
-                    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+                    const csrfToken = getCSRFToken();
                     const parentCommentId = e.target.getAttribute("data-comment-id") || null;
-        
+
                     if (!text) {
                         alert("Comment cannot be empty!");
                         return;
                     }
-        
+
                     try {
-                        const response = await fetch(`{% url 'posts:add_comment' 0 %}`.replace("0", postId), {
+                        const response = await fetch(`/posts/add-comment/${postId}/`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -199,13 +251,12 @@
                             },
                             body: JSON.stringify({ text: text, parent_id: parentCommentId }),
                         });
-        
+
                         const data = await response.json();
-                        console.log("Comment/Reply response:", data);
-        
+
                         if (data.id) {
                             addCommentToDOM(postId, data, parentCommentId);
-                            e.target.querySelector("input[name='text']").value = ""; // Clear input field
+                            e.target.querySelector("input[name='text']").value = ""; // Clear input
                             if (parentCommentId) e.target.style.display = "none"; // Hide reply form after posting
                         } else {
                             alert("Error posting comment.");
@@ -216,17 +267,14 @@
                 }
             });
         
-            // Add Comment / Reply to the DOM
             function addCommentToDOM(postId, commentData, parentId = null) {
-                console.log("Adding comment:", commentData);
-        
                 const commentElement = document.createElement("div");
                 commentElement.classList.add("comment");
                 commentElement.setAttribute("data-comment-id", commentData.id);
                 commentElement.innerHTML = `
                     <div class="comment-header">
                         <strong>${commentData.user}</strong>
-                        <small>${commentData.created_at} ago</small>
+                        <small>${commentData.created_at}</small>
                     </div>
                     <p>${commentData.text}</p>
                     <div class="comment-actions">
@@ -241,9 +289,14 @@
                         </button>
                     </div>
                 `;
-        
+            
                 if (parentId) {
                     const parentComment = document.querySelector(`[data-comment-id='${parentId}']`);
+                    if (!parentComment) {
+                        console.warn("Parent comment not found for reply:", commentData);
+                        return;
+                    }
+            
                     let repliesContainer = parentComment.querySelector(".replies");
                     if (!repliesContainer) {
                         repliesContainer = document.createElement("div");
@@ -254,6 +307,11 @@
                 } else {
                     document.getElementById(`comment-section-${postId}`).querySelector(".comments-list").appendChild(commentElement);
                 }
+            
+                // Recursively add replies
+                if (Array.isArray(commentData.replies) && commentData.replies.length > 0) {
+                    commentData.replies.forEach(reply => addCommentToDOM(postId, reply, commentData.id));
+                }
             }
         
             // Use Event Delegation for Reply Button
@@ -261,7 +319,7 @@
                 if (event.target.classList.contains("reply-btn")) {
                     const commentId = event.target.getAttribute("data-comment-id");
                     let replyForm = document.querySelector(`.reply-form[data-comment-id='${commentId}']`);
-        
+
                     if (!replyForm) {
                         replyForm = document.createElement("form");
                         replyForm.classList.add("reply-form");
@@ -270,7 +328,7 @@
                             <input type="text" name="text" placeholder="Write a reply..." required>
                             <button type="submit">Post Reply</button>
                         `;
-        
+
                         const parentComment = document.querySelector(`[data-comment-id='${commentId}']`);
                         let repliesContainer = parentComment.querySelector(".replies");
                         if (!repliesContainer) {
@@ -280,24 +338,29 @@
                         }
                         repliesContainer.appendChild(replyForm);
                     }
-        
+
                     replyForm.style.display = replyForm.style.display === "block" ? "none" : "block";
                     replyForm.querySelector("input[name='text']").focus();
                 }
             });
+
         
             // Delete Comment
             document.addEventListener("click", async function (event) {
                 if (event.target.classList.contains("delete-comment-btn")) {
                     const commentId = event.target.getAttribute("data-comment-id");
-                    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-        
+                    const csrfToken = getCSRFToken();
+
+                    if (!confirm("Are you sure you want to delete this comment?")) return;
+
                     try {
-                        const response = await fetch(`{% url 'posts:delete_comment' 0 %}`.replace("0", commentId), {
+                        const response = await fetch(`/posts/delete-comment/${commentId}/`, {
                             method: "POST",
-                            headers: { "X-CSRFToken": csrfToken },
+                            headers: {
+                                "X-CSRFToken": csrfToken,
+                            },
                         });
-        
+
                         const data = await response.json();
                         if (data.success) {
                             document.querySelector(`[data-comment-id='${commentId}']`).remove();
@@ -309,8 +372,8 @@
                     }
                 }
             });
+
         
-            // Edit Comment
             document.addEventListener("click", function (event) {
                 if (event.target.classList.contains("edit-comment-btn")) {
                     const commentId = event.target.getAttribute("data-comment-id");
@@ -336,11 +399,11 @@
                         }
         
                         try {
-                            const response = await fetch(`{% url 'posts:edit_comment' 0 %}`.replace("0", commentId), {
+                            const response = await fetch(`/posts/edit-comment/${commentId}/`, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                                    "X-CSRFToken": getCSRFToken(),
                                 },
                                 body: JSON.stringify({ text: newText }),
                             });
@@ -360,8 +423,18 @@
                     });
                 }
             });
+            // Load Comments on Page Load for Each Post
+            document.querySelectorAll("[id^='comment-section-']").forEach(section => {
+                const postId = section.id.replace("comment-section-", "");
+                if (document.getElementById(`comment-section-${postId}`)){
+                    loadComments(postId);
+                } 
+            });
 
         });
+        function getCSRFToken() {
+            return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+        }
     </script>
 </body>
 </html>

@@ -1,18 +1,19 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    background-color: #f8f8f8; /* Softer background */
 }
 
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 12px 24px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -29,40 +30,47 @@ header {
     width: 40px;
 }
 
+/* View Pins Button */
 .view-posts-btn {
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 24px;
-    background-color: #cc001e;
     color: white;
-    transition: background-color 0.3s ease;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #e60023;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .view-posts-btn:hover {
-    background-color: #cc001e;
+    background-color: #ad081b;
 }
 
+/* Main Content */
 main {
-    padding: 20px;
-    max-width: 600px;
+    padding: 40px 20px;
+    max-width: 500px;
     margin: 0 auto;
 }
 
+/* Form Title */
 h2 {
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: bold;
     color: #333;
+    margin-bottom: 20px;
 }
 
+/* Create Post Form */
 .create-post-form {
     background-color: white;
-    padding: 20px;
+    padding: 24px;
     border-radius: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Form Groups */
 .form-group {
     margin-bottom: 15px;
 }
@@ -70,44 +78,79 @@ h2 {
 .form-group label {
     display: block;
     font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
-    
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 6px;
 }
 
+/* Input, Textarea, and Select */
 .form-group input,
 .form-group textarea,
 .form-group select {
-    width: 100%;
-    padding: 10px;
+    width: 100%; /* Ensures full width */
+    padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 14px;
-    color: #333;
     background-color: #f9f9f9;
     transition: border-color 0.3s ease;
-    margin-right: 10px;
+    box-sizing: border-box; /* Prevents width issues */
+}
+
+/* Make select dropdown match input height */
+.form-group select {
+    height: 44px; /* Ensure uniform height */
+    padding-right: 40px; /* Space for dropdown arrow */
+    appearance: none; /* Removes default browser styling */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); 
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+/* Ensure all form elements stay inside the container */
+.create-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     border-color: #e60023;
+    background: white;
     outline: none;
+    box-shadow: 0 0 6px rgba(230, 0, 35, 0.2);
 }
 
+/* Post Button */
 .post-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: #cc001e;
+    width: 40%; /* Adjusts width to fit content */
+    padding: 8px 16px; /* Reduced padding */
+    background-color: #e60023;
     color: white;
     border: none;
-    border-radius: 24px;
-    font-size: 16px;
+    border-radius: 20px; /* Smaller, rounded corners */
+    font-size: 14px; /* Slightly smaller text */
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.2s ease-in-out;
+    display: block;
+    margin: 10px auto; /* Centering */
 }
 
 .post-btn:hover {
-    background-color: #cc001e;
+    background-color: #ad081b;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    main {
+        padding: 20px;
+    }
+    
+    .create-post-form {
+        padding: 20px;
+    }
 }

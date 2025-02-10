@@ -42,7 +42,6 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 # User Logout View
-@login_required
 def user_logout(request):
     """Handles user logout."""
     logout(request)
@@ -84,10 +83,11 @@ def profile(request, user_id=None):
         'followers_count': followers_count,
         'following_count': following_count
     })
+    
 
 
 def home(request):
-    posts = Post.objects.all().order_by('-created_at')  # Adjust ordering if needed
+    posts = Post.objects.all().order_by('-created_at')
     return render(request, "home.html", {"posts": posts})
 
 

@@ -72,3 +72,4 @@ def board_detail(request, board_id):
 
     posts = Post.objects.filter(board=board)
     return render(request, "board_detail.html", {"board": board, "posts": posts})
+
