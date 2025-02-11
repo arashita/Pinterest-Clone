@@ -172,3 +172,12 @@ def edit_comment(request, comment_id):
         })
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+def search_posts(request):
+    query = request.GET.get("q", "").strip()
+    results = []
+
+    if query:
+        results = Post.objects.filter(title__icontains=query) | Post.objects.filter(description__icontains=query)
+
+    return render(request, "search_results.html", {"query": query, "results": results})

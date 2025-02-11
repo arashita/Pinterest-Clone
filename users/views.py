@@ -102,9 +102,9 @@ def follow_user(request, user_id):
         follow, created = Follow.objects.get_or_create(follower=request.user, following=user_to_follow)
 
         if created:
-            return JsonResponse({"message": "Followed successfully!"}, status=201)
+            return JsonResponse({"message": "Followed successfully!", "status": "followed"}, status=201)
         else:
-            return JsonResponse({"error": "You are already following this user."}, status=400)
+            return JsonResponse({"message": "Already following!", "status": "followed"}, status=200)  # ✅ Change 400 to 200
 
 
 @login_required
@@ -117,9 +117,9 @@ def unfollow_user(request, user_id):
         
         if follow.exists():
             follow.delete()
-            return JsonResponse({"message": "Unfollowed successfully!"}, status=200)
+            return JsonResponse({"message": "Unfollowed successfully!", "status": "unfollowed"}, status=200)
         else:
-            return JsonResponse({"error": "You are not following this user."}, status=400)
+            return JsonResponse({"message": "Not following!", "status": "unfollowed"}, status=200)  # ✅ Change 400 to 200
 
 
 @login_required
