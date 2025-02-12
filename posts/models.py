@@ -3,7 +3,7 @@ from django.conf import settings
 from boards.models import Board
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from core.elasticsearch import es, INDEX_NAME
+
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts")
