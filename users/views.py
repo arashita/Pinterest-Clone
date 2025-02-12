@@ -14,7 +14,7 @@ def register(request):
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            login(request, user)  
+            login(request, user)
             return redirect('users:home')  
         else:
             for fields, errors in form.errors.items():
@@ -45,7 +45,7 @@ def user_login(request):
 def user_logout(request):
     """Handles user logout."""
     logout(request)
-    return redirect('index') 
+    return redirect('index')
 
 @login_required
 def profile(request, user_id=None):
@@ -81,8 +81,6 @@ def profile(request, user_id=None):
         'followers_count': followers_count,
         'following_count': following_count
     })
-    
-
 
 def home(request):
     posts = Post.objects.all().order_by('-created_at')
@@ -104,7 +102,7 @@ def follow_user(request, user_id):
         if created:
             return JsonResponse({"message": "Followed successfully!", "status": "followed"}, status=201)
         else:
-            return JsonResponse({"message": "Already following!", "status": "followed"}, status=200)  # ✅ Change 400 to 200
+            return JsonResponse({"message": "Already following!", "status": "followed"}, status=200)
 
 
 @login_required
